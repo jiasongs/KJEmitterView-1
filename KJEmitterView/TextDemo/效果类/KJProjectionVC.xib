@@ -29,13 +29,13 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="透明度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kW-ve-FWd">
-                    <rect key="frame" x="20" y="791" width="52" height="21"/>
+                    <rect key="frame" x="20" y="594" width="52" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Uza-LQ-VyJ">
-                    <rect key="frame" x="90" y="786.5" width="306" height="31"/>
+                    <rect key="frame" x="90" y="589.5" width="306" height="31"/>
                     <connections>
                         <action selector="slider3:" destination="-1" eventType="editingChanged" id="9xM-Gw-zpJ"/>
                     </connections>
@@ -56,10 +56,10 @@
                 <constraint firstItem="VTD-hq-7vw" firstAttribute="height" secondItem="NNS-pP-4ns" secondAttribute="height" id="W2O-KJ-ErP"/>
                 <constraint firstItem="VTD-hq-7vw" firstAttribute="centerX" secondItem="NNS-pP-4ns" secondAttribute="centerX" id="WSv-NW-yBQ"/>
                 <constraint firstItem="Uza-LQ-VyJ" firstAttribute="centerY" secondItem="5kW-ve-FWd" secondAttribute="centerY" id="Wx3-ve-bAt"/>
-                <constraint firstItem="XzL-wZ-tFG" firstAttribute="bottom" secondItem="5kW-ve-FWd" secondAttribute="bottom" constant="50" id="ciH-Fd-sLo"/>
                 <constraint firstItem="XzL-wZ-tFG" firstAttribute="trailing" secondItem="NNS-pP-4ns" secondAttribute="trailing" constant="20" id="d9U-UC-mjc"/>
                 <constraint firstItem="Uza-LQ-VyJ" firstAttribute="trailing" secondItem="NNS-pP-4ns" secondAttribute="trailing" id="n7l-yw-fpK"/>
                 <constraint firstItem="VTD-hq-7vw" firstAttribute="top" secondItem="NNS-pP-4ns" secondAttribute="bottom" constant="20" id="oZW-v0-3bj"/>
+                <constraint firstItem="5kW-ve-FWd" firstAttribute="top" secondItem="VTD-hq-7vw" secondAttribute="bottom" constant="20" id="pO8-LI-8Is"/>
                 <constraint firstItem="Uza-LQ-VyJ" firstAttribute="leading" secondItem="5kW-ve-FWd" secondAttribute="trailing" constant="20" id="wc5-1s-ujA"/>
                 <constraint firstItem="5kW-ve-FWd" firstAttribute="leading" secondItem="NNS-pP-4ns" secondAttribute="leading" id="zct-8E-0kH"/>
             </constraints>

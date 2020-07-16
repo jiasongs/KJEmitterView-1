@@ -7,7 +7,6 @@
 //
 
 #import "KJProjectionVC.h"
-#import "UIImage+KJBlurImage.h"
 @interface KJProjectionVC ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView2;
@@ -19,11 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    /// 获取模糊图片
-    UIImage *image = [self.imageView.image kj_blurTintImageWithColor:UIColor.blackColor];
-    self.imageView2.image = image;
-    
-    self.imageView.image = [self.imageView.image kj_blurImageWithMask:image];
+
 }
 - (IBAction)slider3:(UISlider *)sender {
     

@@ -22,7 +22,7 @@
 }
 - (UIImage*)kj_blurTintImageWithColor:(UIColor*)tintColor {
     const CGFloat EffectColorAlpha = 0.6;
-    UIColor *effectColor  = tintColor;
+    UIColor *effectColor = tintColor;
     int componentCount = (int)CGColorGetNumberOfComponents(tintColor.CGColor);
     if (componentCount == 2) {
         CGFloat b;

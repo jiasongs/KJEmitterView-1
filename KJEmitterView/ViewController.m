@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.sectionTemps = @[@"扩展类",@"CALayer类",@"自定义控件"];
+    self.sectionTemps = @[@"效果类",@"扩展类",@"CALayer类",@"自定义控件"];
     _tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -71,18 +71,20 @@
 - (NSMutableArray *)temps{
     if (!_temps) {
         _temps = [NSMutableArray array];
+        NSMutableArray *temp0 = [NSMutableArray array];
+        [temp0 addObject:@{@"VCName":@"KJProjectionVC",@"describeName":@"投影效果处理"}];
+        [temp0 addObject:@{@"VCName":@"KJReflectionVC",@"describeName":@"倒影处理"}];
+        [temp0 addObject:@{@"VCName":@"KJShadowVC",@"describeName":@"内阴影相关"}];
+        [temp0 addObject:@{@"VCName":@"KJShineVC",@"describeName":@"内发光处理"}];
+        [temp0 addObject:@{@"VCName":@"KJFilterImageVC",@"describeName":@"滤镜相关和特效渲染"}];
+        [temp0 addObject:@{@"VCName":@"KJCoreImageVC",@"describeName":@"CoreImage框架相关"}];
+        
         NSMutableArray *temp1 = [NSMutableArray array];
-        [temp1 addObject:@{@"VCName":@"KJProjectionVC",@"describeName":@"投影效果处理"}];
-        [temp1 addObject:@{@"VCName":@"KJReflectionVC",@"describeName":@"倒影处理"}];
-        [temp1 addObject:@{@"VCName":@"KJCoreImageVC",@"describeName":@"CoreImage框架相关"}];
         [temp1 addObject:@{@"VCName":@"KJButtonVC",@"describeName":@"Button图文布局点赞粒子"}];
-        [temp1 addObject:@{@"VCName":@"KJShadowVC",@"describeName":@"内阴影相关"}];
-        [temp1 addObject:@{@"VCName":@"KJShineVC",@"describeName":@"内发光处理"}];
         [temp1 addObject:@{@"VCName":@"KJViewVC",@"describeName":@"View快速切圆角"}];
         [temp1 addObject:@{@"VCName":@"KJTextViewVC",@"describeName":@"TextView设置限制字数"}];
         [temp1 addObject:@{@"VCName":@"KJFloodImageVC",@"describeName":@"填充同颜色区域图片"}];
         [temp1 addObject:@{@"VCName":@"KJIMageVC",@"describeName":@"加水印和拼接图片"}];
-        [temp1 addObject:@{@"VCName":@"KJFilterImageVC",@"describeName":@"滤镜相关和特效渲染"}];
         [temp1 addObject:@{@"VCName":@"KJMathVC",@"describeName":@"数学方程式"}];
         
         NSMutableArray *temp2 = [NSMutableArray array];
@@ -95,6 +97,7 @@
         [temp3 addObject:@{@"VCName":@"KJSelectController",@"describeName":@"自定义动画选中控件"}];
         [temp3 addObject:@{@"VCName":@"KJSwitchVC",@"describeName":@"自定义动画Switch控件"}];
         [temp3 addObject:@{@"VCName":@"KJMarqueeLabelVC",@"describeName":@"跑马灯Label"}];
+        [_temps addObject:temp0];
         [_temps addObject:temp1];
         [_temps addObject:temp2];
         [_temps addObject:temp3];

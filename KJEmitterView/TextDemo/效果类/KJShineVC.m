@@ -25,27 +25,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
-    //路径阴影
-    CGFloat pw = self.imageView.frame.size.width;
-    CGFloat ph = self.imageView.frame.size.height;
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    //添加直线
-    [path moveToPoint:CGPointMake(pw/3, 20)];
-    [path addLineToPoint:CGPointMake(pw/3*2, 20)];
-    [path addLineToPoint:CGPointMake(pw-20, ph-20)];
-    [path addLineToPoint:CGPointMake(pw/2, ph-60)];
-    [path addLineToPoint:CGPointMake(20, ph-20)];
-    [path addLineToPoint:CGPointMake(20, ph/3)];
-    [path addLineToPoint:CGPointMake(pw/3, 20)];
-    layer = [[KJShadowLayer alloc]kj_initWithFrame:self.imageView.bounds ShadowType:(KJShadowTypeOuterShine)];
-    layer.kj_shadowPath = path;
+    
+    layer = [[KJShadowLayer alloc]kj_initWithFrame:self.imageView.bounds ShadowType:(KJShadowTypeInnerShine)];
+    layer.kj_shadowPath = [UIBezierPath bezierPathWithRect:self.imageView.bounds];
     layer.kj_shadowColor = UIColor.redColor;
     layer.kj_shadowOpacity = self.slider1.value;
     layer.kj_shadowDiffuse = self.slider2.value;
     layer.kj_shadowRadius = self.slider3.value;
     [self.imageView.layer addSublayer:layer];
-//    [self.imageView.layer insertSublayer:layer atIndex:0];
     layer.contents = self.imageView.image;
     
     _weakself;
