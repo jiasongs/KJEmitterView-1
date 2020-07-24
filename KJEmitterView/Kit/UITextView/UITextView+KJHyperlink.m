@@ -50,17 +50,14 @@
     self.linkTextAttributes = @{}; /// 解决设置NSLinkAttributeName字体颜色无效的处理
     //字体大小
     [abs addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0,str.length)];
-    for (NSInteger i=0; i<array.count; i++) {
+    for (int i=0; i<array.count; i++) {
         NSValue *customValue = array[i];
         struct kURLBody value;
         [customValue getValue:&value];
         [temp addObject:[NSString stringWithCString:value.charURLString encoding:NSUTF8StringEncoding]];
-        //点击传值
-        [abs addAttribute:NSLinkAttributeName value:[NSString stringWithFormat:@"%ld",i] range:value.range];
-        //字体颜色
-        [abs addAttribute:NSForegroundColorAttributeName value:color range:value.range];
-        //字体大小
-        [abs addAttribute:NSFontAttributeName value:font range:value.range];
+        [abs addAttribute:NSLinkAttributeName value:[NSString stringWithFormat:@"%d",i] range:value.range];//点击传值
+        [abs addAttribute:NSForegroundColorAttributeName value:color range:value.range];//字体颜色
+        [abs addAttribute:NSFontAttributeName value:font range:value.range];//字体大小
     }
     self.URLTemps = temp.copy;
     array = temp = nil;

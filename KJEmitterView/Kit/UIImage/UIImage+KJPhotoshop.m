@@ -8,156 +8,71 @@
 
 #import "UIImage+KJPhotoshop.h"
 #import <objc/runtime.h>
-#import <CoreImage/CoreImage.h>
 
 @implementation UIImage (KJPhotoshop)
-
-/// Photoshop滤镜相关操作
-- (UIImage*)kj_coreImagePhotoshopWithType:(KJCoreImagePhotoshopType)type Value:(CGFloat)value{
-    CIImage *cimg = [CIImage imageWithCGImage:self.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:KJImageFilterTypeStringMap[type] keysAndValues:kCIInputImageKey, cimg, nil];
-    [filter setValue:@(value) forKey:KJCoreImagePhotoshopTypeStringMap[type]];
-    
-//    // 创建基于CPU的CIContext对象 (默认是基于GPU，CPU需要额外设置参数)
-//    CIContext *context = [CIContext contextWithOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:kCIContextUseSoftwareRenderer]];
-    
-    // 创建基于GPU的CIContext对象，处理速度更快，实时渲染
-    // 获取OpenGLES2渲染环境
-    EAGLContext *eaglctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    //初始化CIImage的环境,指定在OpenGLES2上操作(此处只在GPU上操作)
-    CIContext *context = [CIContext contextWithEAGLContext:eaglctx options:@{kCIContextWorkingColorSpace:[NSNull null]}];
-    
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];
-    CGImageRef cgImage = [context createCGImage:result fromRect:[cimg extent]];
-    UIImage *newImage = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    return newImage;
-}
-/// 通用方法 - 传入过滤器名称和需要的参数
-- (UIImage*)kj_coreImageCustomWithName:(NSString*_Nonnull)name Dicts:(NSDictionary*_Nullable)dicts{
-    CIImage *ciImage = [CIImage imageWithCGImage:self.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:name keysAndValues:kCIInputImageKey, ciImage, nil];
-    for (NSString *key in dicts.allKeys) {
-        [filter setValue:dicts[key] forKey:key];
+/// 获取图片平均颜色
+- (UIColor*)kj_getImageAverageColor{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char rgba[4];
+    CGContextRef context = CGBitmapContextCreate(rgba,1,1,8,4,colorSpace,kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Big);
+    CGContextDrawImage(context, CGRectMake(0,0,1,1), self.CGImage);
+    CGColorSpaceRelease(colorSpace);
+    CGContextRelease(context);
+    if(rgba[3] > 0) {
+        CGFloat alpha = ((CGFloat)rgba[3])/255.0;
+        CGFloat mu = alpha/255.0;
+        return [UIColor colorWithRed:((CGFloat)rgba[0])*mu green:((CGFloat)rgba[1])*mu blue:((CGFloat)rgba[2])*mu alpha:alpha];
+    }else {
+        return [UIColor colorWithRed:((CGFloat)rgba[0])/255.0 green:((CGFloat)rgba[1])/255.0 blue:((CGFloat)rgba[2])/255.0 alpha:((CGFloat)rgba[3])/255.0];
     }
-    // 使用GPU渲染
-    CIContext *context = [CIContext contextWithOptions:nil];
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];
-    CGImageRef cgImage = [context createCGImage:result fromRect:[ciImage extent]];
-    UIImage *newImage = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
+}
+/// 改变图片透明度
+- (UIImage*)kj_changeImageAlpha:(CGFloat)alpha{
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0f);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGRect area = CGRectMake(0, 0, self.size.width, self.size.height);
+    CGContextScaleCTM(ctx, 1, -1);
+    CGContextTranslateCTM(ctx, 0, -area.size.height);
+    CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
+    CGContextSetAlpha(ctx, alpha);
+    CGContextDrawImage(ctx, area, self.CGImage);
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     return newImage;
 }
-
-/// 调整图像的色调映射，同时保留空间细节（高光和阴影）
-- (UIImage*)kj_coreImageHighlightShadowWithHighlightAmount:(CGFloat)HighlightAmount ShadowAmount:(CGFloat)ShadowAmount{
-    NSDictionary *dict = @{@"inputHighlightAmount":@(HighlightAmount),
-                           @"inputShadowAmount":@(ShadowAmount)};
-    return [self kj_coreImageCustomWithName:@"CIHighlightShadowAdjust" Dicts:dict];
+/// 改变图片颜色
+- (UIImage*)kj_changeImageColor:(UIColor*)color{
+    UIGraphicsBeginImageContext(CGSizeMake(self.size.width*2, self.size.height*2));
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGRect area = CGRectMake(0, 0, self.size.width * 2, self.size.height * 2);
+    CGContextScaleCTM(ctx, 1, -1);
+    CGContextTranslateCTM(ctx, 0, -area.size.height);
+    CGContextSaveGState(ctx);
+    CGContextClipToMask(ctx, area, self.CGImage);
+    [color set];
+    CGContextFillRect(ctx, area);
+    CGContextRestoreGState(ctx);
+    CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
+    CGContextDrawImage(ctx, area, self.CGImage);
+    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return destImage;
 }
-/// 将灰度图像转换为被alpha遮罩的白色图像，源图像中的白色值将生成蒙版的内部；黑色值变得完全透明
-- (UIImage*)kj_coreImageBlackMaskToAlpha{
-    return [self kj_coreImageCustomWithName:@"CIMaskToAlpha" Dicts:nil];
-}
-/// 马赛克
-- (UIImage*)kj_coreImagePixellateWithCenter:(CGPoint)center Scale:(CGFloat)scale{
-    CIVector *vector1 = [CIVector vectorWithX:center.x Y:center.y];
-    NSDictionary *dict = @{@"inputCenter":vector1,
-                           @"inputScale":@(scale)};
-    return [self kj_coreImageCustomWithName:@"CIPixellate" Dicts:dict];
-}
-/// 图片圆形变形
-- (UIImage*)kj_coreImageCircularWrapWithCenter:(CGPoint)center Radius:(CGFloat)radius Angle:(CGFloat)angle{
-    CIVector *vector1 = [CIVector vectorWithX:center.x Y:center.y];
-    NSDictionary *dict = @{@"inputCenter":vector1,
-                           @"inputRadius":@(radius),
-                           @"inputAngle":@(angle)};
-    return [self kj_coreImageCustomWithName:@"CICircularWrap" Dicts:dict];
-}
-/// 环形透镜畸变
-- (UIImage*)kj_coreImageTorusLensDistortionCenter:(CGPoint)center Radius:(CGFloat)radius Width:(CGFloat)width Refraction:(CGFloat)refraction{
-    CIVector *vector1 = [CIVector vectorWithX:center.x Y:center.y];
-    NSDictionary *dict = @{@"inputCenter":vector1,
-                           @"inputRadius":@(radius),
-                           @"inputWidth":@(width),
-                           @"inputRefraction":@(refraction)};
-    return [self kj_coreImageCustomWithName:@"CITorusLensDistortion" Dicts:dict];
-}
-/// 空变形
-- (UIImage*)kj_coreImageHoleDistortionCenter:(CGPoint)center Radius:(CGFloat)radius{
-    CIVector *vector1 = [CIVector vectorWithX:center.x Y:center.y];
-    NSDictionary *dict = @{@"inputCenter":vector1,
-                           @"inputRadius":@(radius)};
-    return [self kj_coreImageCustomWithName:@"CIHoleDistortion" Dicts:dict];
-}
-/// 应用透视校正，将源图像中的任意四边形区域转换为矩形输出图像
-- (UIImage*)kj_coreImagePerspectiveCorrectionWithTopLeft:(CGPoint)TopLeft TopRight:(CGPoint)TopRight BottomRight:(CGPoint)BottomRight BottomLeft:(CGPoint)BottomLeft{
-    return [self kj_PerspectiveTransformAndPerspectiveCorrection:@"CIPerspectiveCorrection" TopLeft:TopLeft TopRight:TopRight BottomRight:BottomRight BottomLeft:BottomLeft];
-}
-
-/// 透视变换，透视滤镜倾斜图像
-- (UIImage*)kj_coreImagePerspectiveTransformWithTopLeft:(CGPoint)TopLeft TopRight:(CGPoint)TopRight BottomRight:(CGPoint)BottomRight BottomLeft:(CGPoint)BottomLeft{
-    return [self kj_PerspectiveTransformAndPerspectiveCorrection:@"CIPerspectiveTransform" TopLeft:TopLeft TopRight:TopRight BottomRight:BottomRight BottomLeft:BottomLeft];
-}
-/// 软装专属透视 - 内部有相对应的坐标转换
-- (UIImage*)kj_softFitmentFluoroscopyWithTopLeft:(CGPoint)TopLeft TopRight:(CGPoint)TopRight BottomRight:(CGPoint)BottomRight BottomLeft:(CGPoint)BottomLeft{
-    NSArray *temp = @[NSStringFromCGPoint(TopLeft),
-                      NSStringFromCGPoint(TopRight),
-                      NSStringFromCGPoint(BottomRight),
-                      NSStringFromCGPoint(BottomLeft)];
-    CGFloat minY = TopLeft.y,maxY = TopLeft.y;
-    CGPoint pt = CGPointZero;
-    for (NSString *string in temp) {
-        pt = CGPointFromString(string);
-        minY = pt.y < minY ? pt.y : minY;
-        maxY = pt.y > maxY ? pt.y : maxY;
-    }
-    CGFloat H = maxY - minY;
-    /// 水平方向上下镜像
-    TopLeft.y     = -(TopLeft.y + H);
-    BottomLeft.y  = -(BottomLeft.y + H);
-    BottomRight.y = -(BottomRight.y + H);
-    TopRight.y    = -(TopRight.y + H);
-    return [self kj_PerspectiveTransformAndPerspectiveCorrection:@"CIPerspectiveTransform" TopLeft:TopLeft TopRight:TopRight BottomRight:BottomRight BottomLeft:BottomLeft];
-}
-/// 透视相关方法
-- (UIImage*)kj_PerspectiveTransformAndPerspectiveCorrection:(NSString*)name TopLeft:(CGPoint)TopLeft TopRight:(CGPoint)TopRight BottomRight:(CGPoint)BottomRight BottomLeft:(CGPoint)BottomLeft{
-    CIImage *ciImage = [CIImage imageWithCGImage:self.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:name keysAndValues:kCIInputImageKey, ciImage, nil];
-    CIVector *vector1 = [CIVector vectorWithX:TopLeft.x Y:TopLeft.y];
-    CIVector *vector2 = [CIVector vectorWithX:TopRight.x Y:TopRight.y];
-    CIVector *vector3 = [CIVector vectorWithX:BottomRight.x Y:BottomRight.y];
-    CIVector *vector4 = [CIVector vectorWithX:BottomLeft.x Y:BottomLeft.y];
-    [filter setValue:vector1 forKey:@"inputTopLeft"];
-    [filter setValue:vector2 forKey:@"inputTopRight"];
-    [filter setValue:vector3 forKey:@"inputBottomRight"];
-    [filter setValue:vector4 forKey:@"inputBottomLeft"];
-    /// 输出图片
-    CIImage *outputImage = [filter outputImage];
-    UIImage *newImage = [UIImage imageWithCIImage:outputImage];
-    return newImage;
-}
-/**
-将定向聚光灯效果应用于图像（射灯）
-LightPosition：光源位置（三维坐标）
-LightPointsAt：光点（三维坐标）
-Brightness：亮度
-Concentration：聚光灯聚焦的紧密程度 0 ～ 1
-Color：聚光灯的颜色
-*/
-- (UIImage*)kj_coreImageSpotLightWithLightPosition:(CIVector*)lightPosition LightPointsAt:(CIVector*)lightPointsAt Brightness:(CGFloat)brightness Concentration:(CGFloat)concentration LightColor:(UIColor*)color{
-    CIImage *ciImage = [CIImage imageWithCGImage:self.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:@"CISpotLight" keysAndValues:kCIInputImageKey, ciImage, nil];
-    [filter setDefaults];
-//    [filter setValue:lightPosition forKey:@"inputLightPosition"];
-    [filter setValue:lightPointsAt forKey:@"inputLightPointsAt"];
-    [filter setValue:@(brightness) forKey:@"inputBrightness"];
-    [filter setValue:@(concentration) forKey:@"inputConcentration"];
-    CIColor *inputColor = [[CIColor alloc] initWithColor:color];
-    [filter setValue:inputColor forKey:@"inputColor"];
-    
-    CIImage *outputImage = [filter outputImage];
-    UIImage *newImage = [UIImage imageWithCIImage:outputImage];
+/// 获得灰度图
+- (UIImage*)kj_getGrayImage{
+    //根据设备的屏幕缩放比例调整生成图片的尺寸，避免在图片变糊
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGFloat w = self.size.width * scale;
+    CGFloat h = self.size.height * scale;
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+    //使用kCGImageAlphaPremultipliedLast保留Alpha通道，避免透明区域变成黑色
+    CGContextRef context = CGBitmapContextCreate(nil,w,h,8,0,colorSpace,kCGImageAlphaPremultipliedLast);
+    CGContextDrawImage(context,CGRectMake(0,0,w,h),[self CGImage]);
+    CGImageRef imageRef = CGBitmapContextCreateImage(context);
+    UIImage *newImage = [UIImage imageWithCGImage:imageRef];
+    CGColorSpaceRelease(colorSpace);
+    CGContextRelease(context);
+    CFRelease(imageRef);
     return newImage;
 }
 

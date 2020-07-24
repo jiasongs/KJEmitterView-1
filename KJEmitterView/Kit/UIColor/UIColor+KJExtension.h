@@ -25,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIColor*)kj_gradientFromColor:(UIColor*)color1 toColor:(UIColor*)color2 Width:(NSInteger)width;
 
+/// UIColor转#ffffff格式的16进制字符串
++ (NSString*)kj_hexStringFromColor:(UIColor*)color;
+/// 16进制字符串转UIColor
++ (UIColor*)kj_colorWithHexString:(NSString*)hexString;
 
 @end
 
