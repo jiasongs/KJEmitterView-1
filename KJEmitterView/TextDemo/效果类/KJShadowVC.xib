@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,17 +21,17 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Ccs-gf-s5V">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="透明度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAH-Nc-1XX">
-                    <rect key="frame" x="30" y="345" width="52" height="21"/>
+                    <rect key="frame" x="30" y="428" width="52" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zuqiu" translatesAutoresizingMaskIntoConstraints="NO" id="irM-ho-VAm">
-                    <rect key="frame" x="30" y="10" width="315" height="315"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="IMG_4931" translatesAutoresizingMaskIntoConstraints="NO" id="irM-ho-VAm">
+                    <rect key="frame" x="30" y="54" width="354" height="354"/>
                     <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="irM-ho-VAm" secondAttribute="height" multiplier="1:1" id="0XJ-g3-V4i"/>
@@ -39,49 +39,49 @@
                     </constraints>
                 </imageView>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.80000000000000004" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Org-bW-Mez">
-                    <rect key="frame" x="90" y="340.5" width="257" height="31"/>
+                    <rect key="frame" x="90" y="423.5" width="296" height="31"/>
                     <connections>
                         <action selector="slider1:" destination="-1" eventType="valueChanged" id="1ZJ-5m-IdB"/>
                     </connections>
                 </slider>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="0.0" maxValue="360" translatesAutoresizingMaskIntoConstraints="NO" id="a9w-fg-eai">
-                    <rect key="frame" x="90" y="381.5" width="257" height="31"/>
+                    <rect key="frame" x="90" y="464.5" width="296" height="31"/>
                     <connections>
                         <action selector="slider2:" destination="-1" eventType="valueChanged" id="snh-OA-lhJ"/>
                     </connections>
                 </slider>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="0.0" maxValue="360" translatesAutoresizingMaskIntoConstraints="NO" id="pHY-XI-sQE">
-                    <rect key="frame" x="90" y="422.5" width="257" height="31"/>
+                    <rect key="frame" x="90" y="505.5" width="296" height="31"/>
                     <connections>
                         <action selector="slider3:" destination="-1" eventType="valueChanged" id="aMO-Kf-Kh0"/>
                     </connections>
                 </slider>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="距离" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cYr-2d-OHk">
-                    <rect key="frame" x="30" y="386" width="35" height="21"/>
+                    <rect key="frame" x="30" y="469" width="35" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大小" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ip7-sg-Dzk">
-                    <rect key="frame" x="30" y="427" width="35" height="21"/>
+                    <rect key="frame" x="30" y="510" width="35" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="角度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ws5-Cq-J0G">
-                    <rect key="frame" x="30" y="468" width="35" height="21"/>
+                    <rect key="frame" x="30" y="551" width="35" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="200" minValue="0.0" maxValue="360" translatesAutoresizingMaskIntoConstraints="NO" id="2ji-SQ-1Fm">
-                    <rect key="frame" x="90" y="463.5" width="257" height="31"/>
+                    <rect key="frame" x="90" y="546.5" width="296" height="31"/>
                     <connections>
                         <action selector="slider4:" destination="-1" eventType="valueChanged" id="AMI-WD-l7q"/>
                     </connections>
                 </slider>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PxH-Ug-i7P">
-                    <rect key="frame" x="20" y="503.5" width="335" height="143.5"/>
+                    <rect key="frame" x="20" y="586.5" width="374" height="255.5"/>
                     <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                 </imageView>
             </subviews>
@@ -124,6 +124,6 @@
         </view>
     </objects>
     <resources>
-        <image name="zuqiu" width="1654" height="1654"/>
+        <image name="IMG_4931" width="1241" height="1211"/>
     </resources>
 </document>

@@ -26,6 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self.imageView layoutIfNeeded];
     image = self.imageView.image;
     layer = [[KJShadowLayer alloc]kj_initWithFrame:self.imageView.bounds ShadowType:(KJShadowTypeInner)];
     layer.kj_shadowPath = [UIBezierPath bezierPathWithRect:self.imageView.bounds];
