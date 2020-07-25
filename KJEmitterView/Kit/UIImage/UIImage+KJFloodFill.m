@@ -129,7 +129,6 @@ static const int8_t kFinallyNodeOffset = -1;
 
 /**
  基于扫描线的泛洪算法，获取填充同颜色区域后的图片
- 
  @param startPoint 相对于图片的起点
  @param newColor    填充的颜色
  @param tolerance  判断相邻颜色相同的容差值
@@ -147,15 +146,12 @@ static const int8_t kFinallyNodeOffset = -1;
     NSUInteger bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
     NSUInteger bytesPerPixel = CGImageGetBitsPerPixel(imageRef) / bitsPerComponent;
     NSUInteger bytesPerRow = CGImageGetBytesPerRow(imageRef);
-    
     unsigned char *imageData = malloc(height * bytesPerRow);
-    
     CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
-    if (kCGImageAlphaLast == (uint32_t)bitmapInfo ||
-        kCGImageAlphaFirst == (uint32_t)bitmapInfo){
+    if (kCGImageAlphaLast == (uint32_t)bitmapInfo || kCGImageAlphaFirst == (uint32_t)bitmapInfo){
         bitmapInfo = (uint32_t)kCGImageAlphaPremultipliedLast;
     }
-    
+
     CGContextRef context = CGBitmapContextCreate(imageData,
                                                  width,
                                                  height,
@@ -166,15 +162,10 @@ static const int8_t kFinallyNodeOffset = -1;
     CGColorSpaceRelease(colorSpace);
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef); // 解码
     
-    //    CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
-    //    CFDataRef data = CGDataProviderCopyData(dataProvider); // 解码
-    //    unsigned char *imageData = (unsigned char *)CFDataGetBytePtr(data);
-    
     // 获取开始的点
     NSUInteger byteIndex = roundf(startPoint.x) * bytesPerPixel + roundf(startPoint.y) * bytesPerRow;
     NSUInteger statrColor = getColorCode(byteIndex, imageData);
     //if (compareColor(statrColor, 0, 0)) return self;
-    
     
     // 将UIColor转为RGBA值
     NSUInteger red, green, blue, alpha = 0;
@@ -224,17 +215,15 @@ static const int8_t kFinallyNodeOffset = -1;
             imageData[byteIndex + 1] = green;
             imageData[byteIndex + 2] = blue;
             imageData[byteIndex + 3] = alpha;
-            
             if (x > 0) {
                 byteIndex = bytesPerPixel * (x - 1) + bytesPerRow * y;
                 color = getColorCode(byteIndex, imageData);
                 if (!panLeft && compareColor(statrColor, color, tolerance) && color != nColor) { // 左侧点入栈
                     [points pushWithX:x - 1 PushY:y];
                     panLeft = true;
-                } else if (panLeft && !compareColor(statrColor, color, tolerance)) {
+                }else if (panLeft && !compareColor(statrColor, color, tolerance)) {
                     panLeft = false;
                 }
-                
                 if (!panLeft && !compareColor(statrColor, color, tolerance) && color != nColor) { // 边缘点入栈
                     [antialiasPoints pushWithX:x - 1 PushY:y];
                 }
@@ -246,15 +235,13 @@ static const int8_t kFinallyNodeOffset = -1;
                 if (!panRight && compareColor(statrColor, color, tolerance) && color != nColor) { // 右侧点入栈
                     [points pushWithX:x + 1 PushY:y];
                     panRight = true;
-                } else if (panRight && !compareColor(statrColor, color, tolerance)){
+                }else if (panRight && !compareColor(statrColor, color, tolerance)){
                     panRight = false;
                 }
-                
                 if (!panRight && !compareColor(statrColor, color, tolerance) && color != nColor) {
                     [antialiasPoints pushWithX:x + 1 PushY:y];
                 }
             }
-            
             ++y;
             if (y < height) {
                 byteIndex = bytesPerPixel * x + bytesPerRow * y;
@@ -270,7 +257,6 @@ static const int8_t kFinallyNodeOffset = -1;
             antiAliasOperation(byteIndex, imageData, nColor);
         }
     };
-    
     if (antialias) { // 抗锯齿化
         while ([antialiasPoints popWithX:&x PopY:&y] != INVALID_NODE_CONTENT) {
             NSUInteger byteIndex = bytesPerPixel * x + bytesPerRow * y;
@@ -281,16 +267,9 @@ static const int8_t kFinallyNodeOffset = -1;
             if (y < height-1) block(x, y+1);
         }
     }
-    
     // 将位图转为UIImage
     CGImageRef newImage = CGBitmapContextCreateImage(context);
     CGContextRelease(context);
-    
-    //    colorSpace = CGColorSpaceCreateDeviceRGB()
-    //    CGDataProviderRef newDataProvider = CGDataProviderCreateWithData(NULL, imageData, CFDataGetLength(data), NULL);
-    //    CGImageRef newImage = CGImageCreate(width, height, CGImageGetBitsPerComponent(self.CGImage), CGImageGetBitsPerPixel(self.CGImage), bytesPerRow, colorSpace, CGImageGetBitmapInfo(self.CGImage), newDataProvider, NULL, false, kCGRenderingIntentDefault);
-    //    CGColorSpaceRelease(colorSpace);
-    //    CGDataProviderRelease(newDataProvider);
     
     UIImage *nImage = [UIImage imageWithCGImage:newImage];
     CGImageRelease(newImage);
@@ -304,7 +283,6 @@ static NSUInteger getColorCode(NSUInteger byteIndex, unsigned char *imageData) {
     NSUInteger green = imageData[byteIndex + 1];
     NSUInteger blue = imageData[byteIndex + 2];
     NSUInteger alpha = imageData[byteIndex + 3];
-    
     return red << 24 | green << 16 | blue << 8 | alpha;
 }
 /// 对比两种颜色是否在容差内

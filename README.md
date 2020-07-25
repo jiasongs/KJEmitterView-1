@@ -108,6 +108,10 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 #### <a id="更新日志"></a>更新日志
 ```
 ####版本更新日志:
+#### Add 5.0.1
+1. UIImage+KJAccelerate 新增 Accelerate 框架图片处理
+2. KJImageView 透明图手势穿透处理
+
 #### Add 4.6.9
 1. UIImage+KJPhotoshop 新增 CoreImage 框架多种滤镜效果
 2. UIImage+KJPhotoshop 新增透视和透视矫正处理

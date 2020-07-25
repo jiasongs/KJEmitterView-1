@@ -7,7 +7,6 @@
 //
 
 #import "KJIMageVC.h"
-#import "UIImage+KJProcessing.h"
 
 @interface KJIMageVC ()
 @property (weak, nonatomic) IBOutlet UIImageView *Image1;

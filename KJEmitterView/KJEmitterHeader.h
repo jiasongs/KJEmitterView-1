@@ -44,6 +44,10 @@
  */
 /*
  ####版本更新日志:
+ #### Add 5.0.1
+ 1. UIImage+KJAccelerate 新增 Accelerate 框架图片处理
+ 2. KJImageView 透明图手势穿透处理
+ 
  #### Add 4.6.9
  1. UIImage+KJPhotoshop 新增 CoreImage 框架多种滤镜效果
  2. UIImage+KJPhotoshop 新增透视和透视矫正处理
@@ -61,7 +65,7 @@
  1. UIImage+KJProcessing 新增屏幕截图 kj_captureScreenWindow
  2. UIImage+KJProcessing 新增多边形切图 kj_polygonCaptureImageWithImageView:PointArray:
  3. UIImage+KJProcessing 新增不规则图形切图 kj_anomalyCaptureImageWithView:BezierPath
- 4. UIImage+KJCompressJoint 新增图片拼接处理
+ 4. UIImage+KJCompress 新增图片拼接处理
  5. CALayer+KJReflection 新增倒影处理
  
  #### Add 4.6.4
@@ -171,15 +175,14 @@
 #import "_KJMacros.h"  /// 宏
 #import "_KJINLINE.h"  /// 简单的常用函数
 
-/******************* Kit ******************************/
 #import "UIButton+KJBlock.h" // 点击事件ButtonBlock
 #import "UIButton+KJEnlargeTouchArea.h" // 改变UIButton的响应区域
 #import "UIButton+KJButtonContentLayout.h"  // 图文混排
-#import "UIButton+KJIndicator.h" // 指示器
+//#import "UIButton+KJIndicator.h" // 指示器
 //#import "UIButton+KJEmitter.h" // 按钮粒子效果
 //#import "UIButton+KJCountDown.h" // 倒计时
 
-#import "UILabel+KJAttributedString.h" // 富文本
+//#import "UILabel+KJAttributedString.h" // 富文本
 
 #import "UIView+KJXib.h"   // Xib
 #import "UIView+KJFrame.h" // Frame - 轻量级布局
@@ -197,8 +200,12 @@
 #import "UITextView+KJLimitCounter.h" // 限制字数
 //#import "UITextView+KJHyperlink.h" // 超链接处理
 
-#import "UIImage+KJProcessing.h"  /// 图片加工处理相关
-#import "UIImage+KJCompressJoint.h" /// 图片压缩拼接处理
+#import "UIColor+KJExtension.h" /// 颜色相关扩展
+
+#import "UIImage+KJScale.h"  /// 图片尺寸处理相关
+#import "UIImage+KJCompress.h" /// 图片压缩处理
+#import "UIImage+KJMask.h"/// 蒙版处理
+#import "UIImage+KJCapture.h"/// 截图和裁剪处理
 #import "UIImage+KJCoreImage.h" /// CoreImage 框架图片效果处理
 #import "UIImage+KJAccelerate.h" /// Accelerate 框架的图片处理
 #import "UIImage+KJPhotoshop.h"
@@ -210,9 +217,8 @@
 
 #import "UISegmentedControl+KJCustom.h" // 解决ios13以后 修改不了 backgroundColor 和 tintColor问题
 
-#import "UIColor+KJExtension.h" /// 颜色相关扩展
 
-/******************* Foundation ******************************/
+
 //#import "NSArray+ElementDeal.h"  /// 对数组元素的处理 包括排序、查找、去重等等
 //#import "NSObject+KJMath.h"  /// 数学方程式
 //#import "NSObject+KJGeometry.h" /// 几何方程式

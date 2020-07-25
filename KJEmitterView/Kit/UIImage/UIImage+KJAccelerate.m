@@ -9,6 +9,32 @@
 #import "UIImage+KJAccelerate.h"
 
 @implementation UIImage (KJAccelerate)
+/// 图片旋转
+- (UIImage *)kj_rotateInRadians:(CGFloat)radians{
+    const size_t width  = self.size.width;
+    const size_t height = self.size.height;
+    const size_t bytesPerRow = width * 4;
+    CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+    CGContextRef bmContext = CGBitmapContextCreate(NULL, width, height, 8, bytesPerRow, space, kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst);
+    CGColorSpaceRelease(space);
+    if (!bmContext) return nil;
+    CGContextDrawImage(bmContext, CGRectMake(0, 0, width, height), self.CGImage);
+    UInt8 *data = (UInt8*)CGBitmapContextGetData(bmContext);
+    if (!data){
+        CGContextRelease(bmContext);
+        return nil;
+    }
+    vImage_Buffer src  = {data, height, width, bytesPerRow};
+    vImage_Buffer dest = {data, height, width, bytesPerRow};
+    Pixel_8888 bgColor = {0, 0, 0, 0};
+    vImageRotate_ARGB8888(&src, &dest, NULL, radians, bgColor, kvImageBackgroundColorFill);
+    CGImageRef rotatedImageRef = CGBitmapContextCreateImage(bmContext);
+    UIImage *newImg = [UIImage imageWithCGImage:rotatedImageRef];
+    CGImageRelease(rotatedImageRef);
+    CGContextRelease(bmContext);
+    return newImg;
+}
+
 #pragma mark - 模糊处理
 /// 模糊处理保留透明区域，范围0 ~ 1
 - (UIImage*)kj_linearBlurryImageBlur:(CGFloat)blur{
@@ -75,12 +101,11 @@
     return returnImage;
 }
 /// 模糊处理
-- (UIImage*)kj_blurImageWithRadius:(CGFloat)radius Color:(UIColor*)color Saturation:(CGFloat)saturation MaskImage:(UIImage* _Nullable)maskImage{
+- (UIImage*)kj_blurImageWithRadius:(CGFloat)radius Color:(UIColor*)color MaskImage:(UIImage* _Nullable)maskImage{
     CGRect imageRect = {CGPointZero, self.size};
     UIImage *effectImage = self;
     BOOL hasBlur = radius > __FLT_EPSILON__;
-    BOOL hasSaturationChange = fabs(saturation - 1.) > __FLT_EPSILON__;
-    if (hasBlur || hasSaturationChange) {
+    if (hasBlur) {
         UIGraphicsBeginImageContextWithOptions(self.size, NO, [[UIScreen mainScreen] scale]);
         CGContextRef effectInContext = UIGraphicsGetCurrentContext();
         CGContextScaleCTM(effectInContext, 1.0, -1.0);
@@ -101,42 +126,29 @@
         effectOutBuffer.height   = CGBitmapContextGetHeight(effectOutContext);
         effectOutBuffer.rowBytes = CGBitmapContextGetBytesPerRow(effectOutContext);
 
-        if (hasBlur) {
-            CGFloat inputRadius = radius * [[UIScreen mainScreen] scale];
-            NSUInteger radius = floor(inputRadius * 3. * sqrt(2 * M_PI) / 4 + 0.5);
-            // force radius to be odd so that the three box-blur methodology works.
-            if (radius % 2 != 1) radius += 1;
-            vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, NULL, 0, 0, (uint32_t)radius, (uint32_t)radius, 0, kvImageEdgeExtend);
-            vImageBoxConvolve_ARGB8888(&effectOutBuffer, &effectInBuffer, NULL, 0, 0, (uint32_t)radius, (uint32_t)radius, 0, kvImageEdgeExtend);
-            vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, NULL, 0, 0, (uint32_t)radius, (uint32_t)radius, 0, kvImageEdgeExtend);
+        CGFloat inputRadius = radius * [[UIScreen mainScreen] scale];
+        NSUInteger radius = floor(inputRadius * 3. * sqrt(2 * M_PI) / 4 + 0.5);
+        // force radius to be odd so that the three box-blur methodology works.
+        if (radius % 2 != 1) radius += 1;
+        vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, NULL, 0, 0, (uint32_t)radius, (uint32_t)radius, 0, kvImageEdgeExtend);
+        vImageBoxConvolve_ARGB8888(&effectOutBuffer, &effectInBuffer, NULL, 0, 0, (uint32_t)radius, (uint32_t)radius, 0, kvImageEdgeExtend);
+        vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, NULL, 0, 0, (uint32_t)radius, (uint32_t)radius, 0, kvImageEdgeExtend);
+
+        const int32_t divisor = 256;
+        CGFloat s = 1.;
+        CGFloat floatingPointSaturationMatrix[] = {
+            0.0722 + 0.9278 * s,  0.0722 - 0.0722 * s,  0.0722 - 0.0722 * s,  0,
+            0.7152 - 0.7152 * s,  0.7152 + 0.2848 * s,  0.7152 - 0.7152 * s,  0,
+            0.2126 - 0.2126 * s,  0.2126 - 0.2126 * s,  0.2126 + 0.7873 * s,  0,
+                              0,                    0,                    0,  1,
+        };
+        NSUInteger matrixSize = sizeof(floatingPointSaturationMatrix)/sizeof(floatingPointSaturationMatrix[0]);
+        int16_t saturationMatrix[matrixSize];
+        for (NSUInteger i = 0; i < matrixSize; ++i) {
+            saturationMatrix[i] = (int16_t)roundf(floatingPointSaturationMatrix[i] * divisor);
         }
-        
-        BOOL effectImageBuffersAreSwapped = NO;
-        if (hasSaturationChange) {
-            CGFloat s = saturation;
-            CGFloat floatingPointSaturationMatrix[] = {
-                0.0722 + 0.9278 * s,  0.0722 - 0.0722 * s,  0.0722 - 0.0722 * s,  0,
-                0.7152 - 0.7152 * s,  0.7152 + 0.2848 * s,  0.7152 - 0.7152 * s,  0,
-                0.2126 - 0.2126 * s,  0.2126 - 0.2126 * s,  0.2126 + 0.7873 * s,  0,
-                                  0,                    0,                    0,  1,
-            };
-            const int32_t divisor = 256;
-            NSUInteger matrixSize = sizeof(floatingPointSaturationMatrix)/sizeof(floatingPointSaturationMatrix[0]);
-            int16_t saturationMatrix[matrixSize];
-            for (NSUInteger i = 0; i < matrixSize; ++i) {
-                saturationMatrix[i] = (int16_t)roundf(floatingPointSaturationMatrix[i] * divisor);
-            }
-            if (hasBlur) {
-                vImageMatrixMultiply_ARGB8888(&effectOutBuffer, &effectInBuffer, saturationMatrix, divisor, NULL, NULL, kvImageNoFlags);
-                effectImageBuffersAreSwapped = YES;
-            } else {
-                vImageMatrixMultiply_ARGB8888(&effectInBuffer, &effectOutBuffer, saturationMatrix, divisor, NULL, NULL, kvImageNoFlags);
-            }
-        }
-        
-        if (!effectImageBuffersAreSwapped) effectImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        if (effectImageBuffersAreSwapped) effectImage = UIGraphicsGetImageFromCurrentImageContext();
+        vImageMatrixMultiply_ARGB8888(&effectOutBuffer, &effectInBuffer, saturationMatrix, divisor, NULL, NULL, kvImageNoFlags);
+        effectImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     }
 

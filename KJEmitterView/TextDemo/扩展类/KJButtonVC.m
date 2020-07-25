@@ -9,6 +9,7 @@
 #import "KJButtonVC.h"
 #import "UIButton+KJEmitter.h" // 按钮粒子效果
 #import "UIButton+KJCountDown.h" // 倒计时
+#import "UIButton+KJIndicator.h" // 指示器
 
 @interface KJButtonVC ()
 @property(nonatomic,strong)UIButton *button;
