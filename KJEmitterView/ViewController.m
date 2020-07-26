@@ -72,7 +72,6 @@
     if (!_temps) {
         _temps = [NSMutableArray array];
         NSMutableArray *temp0 = [NSMutableArray array];
-        [temp0 addObject:@{@"VCName":@"KJProjectionVC",@"describeName":@"投影效果处理"}];
         [temp0 addObject:@{@"VCName":@"KJReflectionVC",@"describeName":@"倒影处理"}];
         [temp0 addObject:@{@"VCName":@"KJShadowVC",@"describeName":@"内阴影相关"}];
         [temp0 addObject:@{@"VCName":@"KJShineVC",@"describeName":@"内发光处理"}];

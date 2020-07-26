@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KJReflectionVC">
             <connections>
                 <outlet property="imageView" destination="9mV-jB-hbf" id="VFy-7E-nQQ"/>
+                <outlet property="imageView2" destination="Yrl-X2-4Wv" id="ezM-U4-XDk"/>
                 <outlet property="slider1" destination="6s1-sE-XT0" id="hUe-lw-gXz"/>
                 <outlet property="slider2" destination="RbV-sZ-YAU" id="T0D-BI-b8E"/>
                 <outlet property="slider3" destination="0xK-iC-VI8" id="ntZ-Ej-orT"/>
@@ -34,7 +35,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.90000000000000002" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6s1-sE-XT0">
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6s1-sE-XT0">
                     <rect key="frame" x="73" y="704.5" width="323" height="31"/>
                     <connections>
                         <action selector="slider1:" destination="-1" eventType="valueChanged" id="Qlb-bq-06R"/>
@@ -64,21 +65,31 @@
                         <action selector="slider3:" destination="-1" eventType="valueChanged" id="dC7-GT-NL4"/>
                     </connections>
                 </slider>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yrl-X2-4Wv">
+                    <rect key="frame" x="20" y="254" width="374" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="jQi-wB-OwH"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="Yrl-X2-4Wv" firstAttribute="top" secondItem="9mV-jB-hbf" secondAttribute="bottom" id="03v-ru-6Bh"/>
                 <constraint firstItem="0xK-iC-VI8" firstAttribute="leading" secondItem="s7G-1v-xtj" secondAttribute="trailing" constant="20" id="1AM-DH-brg"/>
                 <constraint firstItem="RbV-sZ-YAU" firstAttribute="leading" secondItem="6s1-sE-XT0" secondAttribute="leading" id="9CT-7l-lXO"/>
                 <constraint firstItem="6s1-sE-XT0" firstAttribute="centerY" secondItem="sQa-nV-sCq" secondAttribute="centerY" id="AzG-1J-RUf"/>
                 <constraint firstItem="0xK-iC-VI8" firstAttribute="trailing" secondItem="6s1-sE-XT0" secondAttribute="trailing" id="FdN-tp-KGO"/>
+                <constraint firstItem="Yrl-X2-4Wv" firstAttribute="leading" secondItem="9mV-jB-hbf" secondAttribute="leading" id="I7Y-Xg-nch"/>
                 <constraint firstItem="s7G-1v-xtj" firstAttribute="leading" secondItem="sQa-nV-sCq" secondAttribute="leading" id="IxQ-xM-RN8"/>
                 <constraint firstItem="s7G-1v-xtj" firstAttribute="leading" secondItem="NxR-ZW-KQe" secondAttribute="leading" id="KLw-dj-8p1"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="9mV-jB-hbf" secondAttribute="trailing" constant="20" id="M3q-wp-0ox"/>
                 <constraint firstItem="s7G-1v-xtj" firstAttribute="top" secondItem="NxR-ZW-KQe" secondAttribute="bottom" constant="20" id="N89-C5-s0E"/>
                 <constraint firstItem="0xK-iC-VI8" firstAttribute="trailing" secondItem="9mV-jB-hbf" secondAttribute="trailing" id="OQ6-jP-LC0"/>
+                <constraint firstItem="Yrl-X2-4Wv" firstAttribute="trailing" secondItem="9mV-jB-hbf" secondAttribute="trailing" id="P7R-xM-O8a"/>
                 <constraint firstItem="0xK-iC-VI8" firstAttribute="centerY" secondItem="s7G-1v-xtj" secondAttribute="centerY" id="Vky-8Q-4mr"/>
                 <constraint firstItem="9mV-jB-hbf" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="ZaH-Z1-B5k"/>
                 <constraint firstItem="s7G-1v-xtj" firstAttribute="leading" secondItem="9mV-jB-hbf" secondAttribute="leading" id="a4d-zM-3v6"/>
+                <constraint firstItem="Yrl-X2-4Wv" firstAttribute="height" secondItem="9mV-jB-hbf" secondAttribute="height" id="da5-tV-KTd"/>
                 <constraint firstItem="RbV-sZ-YAU" firstAttribute="centerY" secondItem="NxR-ZW-KQe" secondAttribute="centerY" id="fw6-QW-rXj"/>
                 <constraint firstItem="RbV-sZ-YAU" firstAttribute="trailing" secondItem="6s1-sE-XT0" secondAttribute="trailing" id="l0f-nB-Ca1"/>
                 <constraint firstItem="0xK-iC-VI8" firstAttribute="leading" secondItem="6s1-sE-XT0" secondAttribute="leading" id="l7M-Tg-K40"/>

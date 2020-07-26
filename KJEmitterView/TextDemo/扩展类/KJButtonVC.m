@@ -159,7 +159,7 @@
         _countDownButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
         _countDownButton.frame = CGRectMake(180, Y, 80, 25);
         _countDownButton.centerY = label.centerY;
-        _countDownButton.backgroundColor = [UIColor kj_gradientFromColor:UIColor.redColor toColor:UIColor.yellowColor Width:80];//[UIColor.blueColor colorWithAlphaComponent:0.3];
+        _countDownButton.backgroundColor = [UIColor.redColor kj_gradientAcrossToColor:UIColor.yellowColor Width:80];
         _countDownButton.layer.cornerRadius = 5;
         _countDownButton.layer.borderWidth = 1;
         _countDownButton.layer.borderColor = UIColor.blueColor.CGColor;

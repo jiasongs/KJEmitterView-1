@@ -133,5 +133,34 @@
     UIGraphicsEndImageContext();
     return image;
 }
+/// 图片路径裁剪，裁剪路径 "以外" 部分
++ (UIImage*)kj_captureOuterImage:(UIImage*)image BezierPath:(UIBezierPath*)path Rect:(CGRect)rect{
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGMutablePathRef outer = CGPathCreateMutable();
+    CGPathAddRect(outer, NULL, rect);
+    CGPathAddPath(outer, NULL, path.CGPath);
+    CGContextAddPath(context, outer);
+    CGPathRelease(outer);
+    CGContextSetBlendMode(context, kCGBlendModeClear);
+    [image drawInRect:rect];
+    CGContextDrawPath(context, kCGPathEOFill);
+    UIImage *newimage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newimage;
+}
+/// 图片路径裁剪，裁剪路径 "以内" 部分
++ (UIImage*)kj_captureInnerImage:(UIImage*)image BezierPath:(UIBezierPath*)path Rect:(CGRect)rect{
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetBlendMode(context, kCGBlendModeClear);/// kCGBlendModeClear 裁剪部分透明
+    [image drawInRect:rect];
+    CGContextAddPath(context, path.CGPath);
+    CGContextDrawPath(context, kCGPathEOFill);
+    UIImage *newimage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newimage;
+}
+
 
 @end

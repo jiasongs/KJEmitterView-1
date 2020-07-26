@@ -9,22 +9,30 @@
 #import "UIImage+KJCoreImage.h"
 
 @implementation UIImage (KJCoreImage)
+- (EAGLContext*)eagContext{
+    EAGLContext *eag = objc_getAssociatedObject(self, @selector(eagContext));
+    if (eag == nil) {
+        // 创建基于GPU的CIContext对象，处理速度更快，实时渲染
+        eag = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        objc_setAssociatedObject(self, @selector(eagContext), eag, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return eag;
+}
+- (CIContext*)ciContext{
+    CIContext *context = objc_getAssociatedObject(self, @selector(ciContext));
+    if (context == nil) {
+        context = [CIContext contextWithEAGLContext:self.eagContext options:@{kCIContextWorkingColorSpace:[NSNull null]}];
+        objc_setAssociatedObject(self, @selector(ciContext), context, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return context;
+}
 /// Photoshop滤镜相关操作
 - (UIImage*)kj_coreImagePhotoshopWithType:(KJCoreImagePhotoshopType)type Value:(CGFloat)value{
     CIImage *cimg = [CIImage imageWithCGImage:self.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:KJImageFilterTypeStringMap[type] keysAndValues:kCIInputImageKey, cimg, nil];
+    CIFilter *filter = [CIFilter filterWithName:KJImageFilterTypeStringMap[type] keysAndValues:kCIInputImageKey,cimg,nil];
     [filter setValue:@(value) forKey:KJCoreImagePhotoshopTypeStringMap[type]];
-//    // 创建基于CPU的CIContext对象 (默认是基于GPU，CPU需要额外设置参数)
-//    CIContext *context = [CIContext contextWithOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:kCIContextUseSoftwareRenderer]];
-    
-    // 创建基于GPU的CIContext对象，处理速度更快，实时渲染
-    // 获取OpenGLES2渲染环境
-    EAGLContext *eaglctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    //初始化CIImage的环境,指定在OpenGLES2上操作(此处只在GPU上操作)
-    CIContext *context = [CIContext contextWithEAGLContext:eaglctx options:@{kCIContextWorkingColorSpace:[NSNull null]}];
-    
     CIImage *result = [filter valueForKey:kCIOutputImageKey];
-    CGImageRef cgImage = [context createCGImage:result fromRect:[cimg extent]];
+    CGImageRef cgImage = [self.ciContext createCGImage:result fromRect:[cimg extent]];
     UIImage *newImage = [UIImage imageWithCGImage:cgImage];
     CGImageRelease(cgImage);
     return newImage;
@@ -32,19 +40,16 @@
 /// 通用方法 - 传入过滤器名称和需要的参数
 - (UIImage*)kj_coreImageCustomWithName:(NSString*_Nonnull)name Dicts:(NSDictionary*_Nullable)dicts{
     CIImage *ciImage = [CIImage imageWithCGImage:self.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:name keysAndValues:kCIInputImageKey, ciImage, nil];
+    CIFilter *filter = [CIFilter filterWithName:name keysAndValues:kCIInputImageKey,ciImage,nil];
     for (NSString *key in dicts.allKeys) {
         [filter setValue:dicts[key] forKey:key];
     }
-    // 使用GPU渲染
-    CIContext *context = [CIContext contextWithOptions:nil];
     CIImage *result = [filter valueForKey:kCIOutputImageKey];
-    CGImageRef cgImage = [context createCGImage:result fromRect:[ciImage extent]];
+    CGImageRef cgImage = [self.ciContext createCGImage:result fromRect:[ciImage extent]];
     UIImage *newImage = [UIImage imageWithCGImage:cgImage];
     CGImageRelease(cgImage);
     return newImage;
 }
-
 /// 调整图像的色调映射，同时保留空间细节（高光和阴影）
 - (UIImage*)kj_coreImageHighlightShadowWithHighlightAmount:(CGFloat)HighlightAmount ShadowAmount:(CGFloat)ShadowAmount{
     NSDictionary *dict = @{@"inputHighlightAmount":@(HighlightAmount),
@@ -90,7 +95,6 @@
 - (UIImage*)kj_coreImagePerspectiveCorrectionWithTopLeft:(CGPoint)TopLeft TopRight:(CGPoint)TopRight BottomRight:(CGPoint)BottomRight BottomLeft:(CGPoint)BottomLeft{
     return [self kj_PerspectiveTransformAndPerspectiveCorrection:@"CIPerspectiveCorrection" TopLeft:TopLeft TopRight:TopRight BottomRight:BottomRight BottomLeft:BottomLeft];
 }
-
 /// 透视变换，透视滤镜倾斜图像
 - (UIImage*)kj_coreImagePerspectiveTransformWithTopLeft:(CGPoint)TopLeft TopRight:(CGPoint)TopRight BottomRight:(CGPoint)BottomRight BottomLeft:(CGPoint)BottomLeft{
     return [self kj_PerspectiveTransformAndPerspectiveCorrection:@"CIPerspectiveTransform" TopLeft:TopLeft TopRight:TopRight BottomRight:BottomRight BottomLeft:BottomLeft];

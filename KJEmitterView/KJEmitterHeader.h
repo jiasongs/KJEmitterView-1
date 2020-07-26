@@ -44,6 +44,10 @@
  */
 /*
  ####版本更新日志:
+ #### Add 5.0.2
+ 1. UIImage+KJReflection 新增倒影
+ 2. UIImage+KJCapture 新增裁剪方法
+ 
  #### Add 5.0.1
  1. UIImage+KJAccelerate 新增 Accelerate 框架图片处理
  2. KJImageView 透明图手势穿透处理

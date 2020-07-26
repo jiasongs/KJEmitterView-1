@@ -10,12 +10,12 @@
 
 @implementation UIColor (KJExtension)
 /// 渐变色
-+ (UIColor*)kj_gradientFromColor:(UIColor*)color1 toColor:(UIColor*)color2 Height:(NSInteger)height{
+- (UIColor*)kj_gradientVerticalToColor:(UIColor*)color Height:(NSInteger)height{
     CGSize size = CGSizeMake(1, height);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    NSArray* colors = [NSArray arrayWithObjects:(id)color1.CGColor, (id)color2.CGColor, nil];
+    NSArray * colors = [NSArray arrayWithObjects:(id)self.CGColor, (id)color.CGColor, nil];
     CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (__bridge CFArrayRef)colors, NULL);
     CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, size.height), 0);
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -24,13 +24,12 @@
     UIGraphicsEndImageContext();
     return [UIColor colorWithPatternImage:image];
 }
-
-+ (UIColor*)kj_gradientFromColor:(UIColor*)color1 toColor:(UIColor*)color2 Width:(NSInteger)width{
+- (UIColor*)kj_gradientAcrossToColor:(UIColor*)color Width:(NSInteger)width{
     CGSize size = CGSizeMake(width, 1);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    NSArray* colors = [NSArray arrayWithObjects:(id)color1.CGColor, (id)color2.CGColor, nil];
+    NSArray * colors = [NSArray arrayWithObjects:(id)self.CGColor, (id)color.CGColor, nil];
     CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (__bridge CFArrayRef)colors, NULL);
     CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(size.width, size.height), 0);
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -40,12 +39,12 @@
     return [UIColor colorWithPatternImage:image];
 }
 // UIColor转#ffffff格式的16进制字符串
-+ (NSString *)kj_hexStringFromColor:(UIColor*)color {
++ (NSString*)kj_hexStringFromColor:(UIColor*)color {
     const CGFloat *components = CGColorGetComponents(color.CGColor);
     CGFloat r = components[0];
     CGFloat g = components[1];
     CGFloat b = components[2];
-    return [NSString stringWithFormat:@"#%02lX%02lX%02lX",lroundf(r * 255),lroundf(g * 255),lroundf(b * 255)];
+    return [NSString stringWithFormat:@"#%02lX%02lX%02lX",lroundf(r*255),lroundf(g*255),lroundf(b*255)];
 }
 /// 16进制字符串转UIColor
 + (UIColor*)kj_colorWithHexString:(NSString*)hexString {

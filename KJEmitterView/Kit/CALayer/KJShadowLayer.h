@@ -4,7 +4,7 @@
 //
 //  Created by 杨科军 on 2020/4/28.
 //  Copyright © 2020 杨科军. All rights reserved.
-//  内发光、外发光、内阴影、外阴影、投影相关
+//  内发光、外发光、内阴影、外阴影
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -15,7 +15,6 @@ typedef NS_ENUM(NSInteger, KJShadowType) {
     KJShadowTypeOuter, /// 外阴影
     KJShadowTypeInnerShine, /// 内发光
     KJShadowTypeOuterShine, /// 外发光
-    KJShadowTypeProjection, /// 投影
 };
 @interface KJShadowLayer : CALayer<NSCopying>
 /* 路径 */
@@ -40,13 +39,6 @@ typedef NS_ENUM(NSInteger, KJShadowType) {
 
 // 提供一套阴影角度算法 angele:范围（0-360）distance:距离
 - (CGSize)kj_innerShadowAngle:(CGFloat)angle Distance:(CGFloat)distance;
-
-- (void)ff_setAllWithShadowPath:(UIBezierPath*)kj_shadowPath
-                    shadowColor:(UIColor*)kj_shadowColor
-                   shadowRadius:(CGFloat)kj_shadowRadius
-                  shadowOpacity:(CGFloat)kj_shadowOpacity
-                    shadowAngle:(CGFloat)kj_shadowAngle
-                  shadowDiffuse:(CGFloat)kj_shadowDiffuse;
 
 @end
 
