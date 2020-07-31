@@ -108,6 +108,9 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 #### <a id="更新日志"></a>更新日志
 ```
 ####版本更新日志:
+#### Add 5.0.3
+1. UIImage+KJMask 新增透明图穿透处理
+
 #### Add 5.0.2
 1. UIImage+KJReflection 新增倒影
 2. UIImage+KJCapture 新增裁剪方法

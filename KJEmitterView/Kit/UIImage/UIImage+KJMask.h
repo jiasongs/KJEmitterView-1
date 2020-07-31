@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIImage (KJMask)
 /// 圆形图片
 - (UIImage*)kj_circleImage;
-/// 画水印
+/// 图片添加水印
 - (UIImage*)kj_waterMark:(UIImage*)mark InRect:(CGRect)rect;
 /// 拼接图片
 - (UIImage*)kj_jointImageWithHeadImage:(UIImage*)headImage FootImage:(UIImage*)footImage;
@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage*)kj_imageCompoundWithLoopNums:(NSInteger)loopTimes Orientation:(UIImageOrientation)orientation;
 /// 蒙版图片处理
 - (UIImage*)kj_maskImage:(UIImage*)maskImage;
+/// 图片透明区域点击穿透处理
+- (bool)kj_transparentWithPoint:(CGPoint)point;
 @end
 
 NS_ASSUME_NONNULL_END
