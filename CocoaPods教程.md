@@ -13,16 +13,18 @@
 #### 打标签的目的就相当于给你的开源框架制定版本号
 ###### 1．cd仓库目录
 ###### 2．查看本地tag           ```git tag```
-###### 3．添加本地tag 1.0.0     ```git tag -a 1.0.0 -m 'release 1.0.0'```
+###### 3．添加本地tag 1.0.0    ```git tag -a 1.0.0 -m 'release 1.0.0'```
 ![图片 1.png](https://upload-images.jianshu.io/upload_images/1933747-44046777bef06be9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ###### 4．将tag传到远程       ```git push origin --tags```
 
-#### tag的其他操作
+### 三、删除
 ###### 1．删除本地tag         ```git tag -d 1.0.0```
-###### 2．删除远程tag          ```git push origin -d tag 1.0.0```
+###### 2．删除远程tag         ```git push origin -d tag 1.0.0```
+###### 3、删除trunk库指定版本    ```pod trunk delete KJEmitterView 0.0.1```
+###### 4、删除pods所有版本  ```pod trunk deprecate KJEmitterView ```
+- 删除之后，重新pod repo处理   ```pod repo update```
 
----
-### 三、注册Trunk
+### 四、注册Trunk
 ###### 1．注册Trunk        ```pod trunk register 邮箱 '用户名' --description='描述'```
 ![图片 2.png](https://upload-images.jianshu.io/upload_images/1933747-c852db27cf095480.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 成功的话就会受到一份邮件，点击邮件中的链接后验证一下：
@@ -35,11 +37,11 @@
 成功会看到如下类似字段：
 ![图片 4.png](https://upload-images.jianshu.io/upload_images/1933747-4456967244d3c848.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-###### 4．如果你的pod是由多人维护的，你也可以添加其他维护者
-```pod trunk add-owner 名称 邮箱```
+###### 4．添加新成员（可更改和上传pod库） ```pod trunk add-owner 名称 邮箱```
+###### 5．移除成员： ```pod trunk remove-owner 邮箱地址```
 
 ---
-### 四、获取MIT文件
+### 五、获取MIT文件
 ###### 1．网页链接     https://choosealicense.com/
 ![图片 5.png](https://upload-images.jianshu.io/upload_images/1933747-a5a136dae00879bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 复制，修改相应的数据
@@ -48,7 +50,7 @@
 ###### 2．将生成的LICENSE文件同步至Github
 
 ---
-### 五、创建自己项目的Podspec描述文件
+### 六、创建自己项目的Podspec描述文件
 ###### 1．创建podspec文件            ```pod spec create KJEmitterView```
 ###### 2．podspec文件代码
 ```
@@ -99,24 +101,24 @@ end
 ```
 ###### 3．验证你本地的podspec文件     ```pod spec lint KJEmitterView.podspec```
 ###### 4．忽略警告     ```pod spec lint KJEmitterView.podspec --allow-warnings```
-###### 5. 忽略警告和看到进度验证 ```pod spec lint KJEmitterView.podspec --allow-warnings --verbose```
+###### 5．忽略警告和看到进度验证 ```pod spec lint KJEmitterView.podspec --allow-warnings --verbose```
+###### 6．不需要联网验证 ```pod lib lint```
 验证成功
 ![图片 7.png](https://upload-images.jianshu.io/upload_images/1933747-a0561698c89fcacf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ---
-### 六、传到CocoaPods上
+### 七、传到CocoaPods上
 ###### 1．首先验证你本地的podspec文件，之后会上传spec文件到trunk
 ###### 2．将podspec文件传到trunk上    ```pod trunk push KJEmitterView.podspec```
 ###### 3．忽略警告上传   ```pod trunk push KJEmitterView.podspec --allow-warnings```
 成功如下：
 ![图片 8.png](https://upload-images.jianshu.io/upload_images/1933747-f534f0b699fd2e63.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-###### 3．一直处于Updating spec repo master 状态   
-可以选择更新下              ```pod repo update --verbose```
-###### 4．检查是否上传成功：        ```pod search KJEmitterView```
+###### 3．一直处于Updating spec repo master 状态，更新一下   ```pod repo update --verbose```
+###### 4．检查是否上传成功   ```pod search KJEmitterView```
+###### 5.  删除trunk上面的库    `pod trunk delete KJEmitterView 0.0.1`
 
-
-### 七、Bug总结
+### 八、问题总结
 ###### 1、There was an error registering with trunk: getaddrinfo: nodename nor servname provided, or not known
 - 解决方案：开启了ShadowSocks，把ShadowSocks关闭再重试就好了，根本原因是DNS不对
 - 附上解决方案链接：https://link.jianshu.com/?t=https://github.com/CocoaPods/CocoaPods/issues/2174
