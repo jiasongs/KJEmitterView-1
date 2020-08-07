@@ -18,7 +18,6 @@
 #define kNotificationCenter [NSNotificationCenter defaultCenter] // 通知中心
 #define KPostNotification(name,obj,info) [[NSNotificationCenter defaultCenter]postNotificationName:name object:obj userInfo:info] // 发送通知
 
-
 #pragma mark ********** 2.自定义高效率的 NSLog ************
 #ifdef DEBUG // 输出日志 (格式: [编译时间] [文件名] [方法名] [行号] [输出内容])
 #define NSLog(FORMAT, ...) fprintf(stderr,"------- 😎 给我点赞 😎 -------\n编译时间:%s\n文件名:%s\n方法名:%s\n行号:%d\n打印信息:%s\n\n", __TIME__,[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],__func__,__LINE__,[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
@@ -36,18 +35,8 @@
 #define KJTimeTick CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
 #define KJTimeTock NSLog(@"Time: %f", CFAbsoluteTimeGetCurrent() - start)
 
-
 #pragma mark ********** 3.弱引用 *********
-#define WEAKSELF  __weak __typeof(&*self) weakSelf = self;
-#define _weakself __weak typeof(self) weakself = self
-/**推荐使用（摘自YYKit）
- @kWeakObject(self)
- [self doSomething^{
- @kStrongObject(self)
- if (!self) return;
- ...
- }];
- */
+#define _weakself __weak __typeof(&*self) weakself = self
 #ifndef kWeakObject
 #if DEBUG
 #if __has_feature(objc_arc)
@@ -144,8 +133,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 // 字典是否为空
 #define kDictIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
 // 是否是空对象
-#define kObjectIsEmpty(_object) (_object == nil \
-|| [_object isKindOfClass:[NSNull class]] \
+#define kObjectIsEmpty(_object) (_object == nil || [_object isKindOfClass:[NSNull class]] \
 || ([_object respondsToSelector:@selector(length)] && [(NSData *)_object length] == 0) \
 || ([_object respondsToSelector:@selector(count)] && [(NSArray *)_object count] == 0))
 
@@ -185,7 +173,7 @@ objc_setAssociatedObject(self, @selector(propertyGetter), valueObj, OBJC_ASSOCIA
  使用方法:
  .h文件
  kSingletonImplementation_H(类名)
-
+ 
  .m文件
  kSingletonImplementation_M(类名)
  
@@ -250,28 +238,22 @@ return instance; \
 #define kSystemBlodFontSize(fontsize)   [UIFont boldSystemFontOfSize:(fontsize)] /// 粗体
 #define kSystemItalicFontSize(fontsize) [UIFont italicSystemFontOfSize:(fontsize)]
 
-
 #pragma mark ********** 9.NSUserDefaults相关    *********
 #define kUserDefaults [NSUserDefaults standardUserDefaults]
 // 永久存储对象
-#define kSetUserDefaults(object, key) \
-({ \
+#define kSetUserDefaults(object, key) ({ \
 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];  \
 [defaults setObject:object forKey:key];   \
-[defaults synchronize];  \
-})
+[defaults synchronize]; })
 // 获取对象
 #define kGetUserDefaults(key) [[NSUserDefaults standardUserDefaults] objectForKey:key]
 // 删除某一个对象
-#define kRemoveUserDefaults(key)  \
-({ \
+#define kRemoveUserDefaults(key) ({ \
 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; \
-[defaults removeObjectForKey:key];  \
-[defaults synchronize];  \
-})
+[defaults removeObjectForKey:key]; \
+[defaults synchronize]; })
 // 清除 NSUserDefaults 保存的所有数据
 #define kRemoveAllUserDefaults  [kUserDefaults removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]]
-
 
 #pragma mark ********** 10.获取时间    *********
 //获得当前的年份
@@ -303,74 +285,5 @@ dispatch_group_async(group, queue, group_async_block);\
 dispatch_group_notify(group, queue, ^{\
 dispatch_async(dispatch_get_main_queue(), group_notify_block);\
 })\
-
-#pragma mark ********** 宏的用法总结   *********
-/* 宏的基本用法
-  1.宏定义需要加括号的两种情况:
-    (1)如果宏的替换列表中带有运算符,那么使用要将替换列表放到括号中。例如#define MAX_VALUE(X,Y) ((X) > (Y) ? (X) : (Y))
-    (2)如果宏有参数,每次参数在替换列表中出现时都要放在括号中。同上
- #define MAX_VALUE(X,Y) ((X) > (Y) ? (X) : (Y))// 求两个数中的最大值
- 
-  2.#运算符和##运算符
-  (1)出现在宏定义中的#运算符把跟在其后的参数转换成一个字符串。有时把这种用法的#称为字符串化运算符。例如：
-  #define PASTE(n) "adhfkj"#n
-  main(){
-  printf("%s\n",PASTE(15));
-  }
-  宏定义中的#运算符告诉预处理程序，把源代码中任何传递给该宏的参数转换成一个字符串。所以输出应该是adhfkj15。
- 
- 针对Window,dos,os2不同的系统对WIDTH进行不同的定义
- 单独一行的#是空指令
- #ifdef WINDOWS
- #
- #define WIDTH 375
- #
- #elif defined(DOS)
- #
- #define WIDTH 414
- #
- #elif defined(OS)
- #
- #define WIDTH 320
- #
- #else
- #
- //#error no sysytem;
- #
- #endif
-  (2)##运算符用于把参数连接到一起。预处理程序把出现在##两侧的参数合并成一个符号。看下面的例子：
-  #define NUM(a,b,c) a##b##c
-  #define STR(a,b,c) a##b##c
-  main(){
-  printf("%d\n",NUM(1,2,3));
-  printf("%s\n",STR("aa","bb","cc"));
-  }
-  最后程序的输出为:
-  123
-  aabbcc
- 
- #define IMAGE_NAME(NAME) @"image_name"#NAME // IMAGE_NAME(3)=image_name3
- #define STR(NAME,AGE,SEX) @"名字:"#NAME@".年龄:"#AGE@".性别:"#SEX// 名字:@“王五".年龄:24.性别:@"男"
- 
-  3.取消宏定义
-  #undef NUM1
- 
-  4.复杂宏的定义
- #define NSLOG_ARRAY_OR_DICT(ARRAY,DICT) (NSLog(@"array = %@,dict = %@",[(ARRAY) description],[(DICT) description]));
- //设计技巧:dowhile中出现;
- #define NSLOG_ARRAY_OR_DICT2(ARRAY,DICT) do {int a =1;NSLog(@"a = %d",a);NSLog(@"array = %@,dict = %@",[(ARRAY) description],[(DICT) description]);}while(0)
- 
- 5.条件编译args...表示有多个参数
- (1)打印信息
- #define DEBUG1
- #if DEBUG
- #define MY_NSLog(fmt,args...) NSLog(@fmt,##args)
- #else
- #define MY_NSLog(fmt,args...)
- #endif
- 
- */
-
-
 
 #endif /* _KJMacros_h */
