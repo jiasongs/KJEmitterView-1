@@ -15,7 +15,7 @@
  *  @param size 目的大小
  *  @return 修改后的Image
  */
-- (UIImage *)kj_cropImageWithAnySize:(CGSize)size{
+- (UIImage*)kj_cropImageWithAnySize:(CGSize)size{
     float scale = self.size.width/self.size.height;
     CGRect rect = CGRectMake(0, 0, 0, 0);
     if (scale > size.width/size.height){
@@ -33,48 +33,33 @@
     
     return croppedImage;
 }
-- (UIImage *)scaleWithFixedWidth:(CGFloat)width {
+- (UIImage*)scaleWithFixedWidth:(CGFloat)width {
     float newHeight = self.size.height * (width / self.size.width);
-    CGSize size     = CGSizeMake(width, newHeight);
+    CGSize size = CGSizeMake(width, newHeight);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     CGContextTranslateCTM(context, 0.0, size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
-    
     CGContextSetBlendMode(context, kCGBlendModeCopy);
     CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, size.width, size.height), self.CGImage);
-    
     UIImage *imageOut = UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
-    
     return imageOut;
 }
 
-- (UIImage *)scaleWithFixedHeight:(CGFloat)height {
+- (UIImage*)scaleWithFixedHeight:(CGFloat)height {
     float newWidth = self.size.width * (height / self.size.height);
-    CGSize size    = CGSizeMake(newWidth, height);
-    
+    CGSize size = CGSizeMake(newWidth, height);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     CGContextTranslateCTM(context, 0.0, size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
-    
     CGContextSetBlendMode(context, kCGBlendModeCopy);
     CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, size.width, size.height), self.CGImage);
-    
     UIImage *imageOut = UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
-    
     return imageOut;
 }
-
-
 /** 裁剪和拉升图片 */
 - (UIImage*)kj_scalingAndCroppingForTargetSize:(CGSize)targetSize{
     UIImage *sourceImage = self;
@@ -88,7 +73,6 @@
     CGFloat scaledWidth = targetWidth;
     CGFloat scaledHeight = targetHeight;
     CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
-    
     if (CGSizeEqualToSize(imageSize, targetSize)== NO){
         CGFloat widthFactor = targetWidth / width;
         CGFloat heightFactor = targetHeight / height;
@@ -102,7 +86,6 @@
             thumbnailPoint.x = (targetWidth - scaledWidth)* 0.5;
         }
     }
-    
     UIGraphicsBeginImageContext(targetSize); // this will crop
     CGRect thumbnailRect = CGRectZero;
     thumbnailRect.origin = thumbnailPoint;
@@ -145,5 +128,28 @@
     CGImageRelease(masked);
     return retImage;
 }
-
+/// 不拉升填充图片
+- (UIImage*)kj_scaleAspectFitImageWithSize:(CGSize)size{
+    CGFloat x,y,w,h;
+    if ((self.size.width/self.size.height)<(size.width/size.height)) {
+        y = 0.;
+        h = size.height;
+        w = self.size.width * h / self.size.height;
+        x = (size.width - w) / 2.;
+    }else {
+        x = 0.;
+        w = size.width;
+        h = self.size.height * w / self.size.width;
+        y = -(size.height - h) / 2.;
+    }
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0.0, h);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
+    CGContextDrawImage(context, CGRectMake(x, y, w, h), self.CGImage);
+    UIImage *imageOut = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return imageOut;
+}
 @end

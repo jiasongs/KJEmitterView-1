@@ -21,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage*)kj_scalingAndCroppingForTargetSize:(CGSize)targetSize;
 /// 通过比例来缩放图片
 - (UIImage*)kj_transformImageScale:(CGFloat)scale;
-
+/// 不拉升填充图片
+- (UIImage*)kj_scaleAspectFitImageWithSize:(CGSize)size;
 @end
 
 NS_ASSUME_NONNULL_END
