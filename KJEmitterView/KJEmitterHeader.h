@@ -25,7 +25,7 @@
  pod 'KJBannerView'  # 轮播图，网络图片加载 支持网络GIF和网络图片和本地图片混合轮播
  
  加载Loading - 多种样式供选择 HUD控件封装
- pod 'KJLoadingAnimation' # 加载控件
+ pod 'KJLoading' # 加载控件
  
  菜单控件 - 下拉控件 选择控件
  pod 'KJMenuView' # 菜单控件
@@ -46,6 +46,8 @@
  ####版本更新日志:
  #### Add 5.0.3
  1. UIImage+KJMask 新增透明图穿透处理
+ 2. _KJINLINE 新增GCD方法封装处理
+ 3. UIImage+KJScale 不拉升填充图片处理 kj_scaleAspectFitImageWithSize
  
  #### Add 5.0.2
  1. UIImage+KJReflection 新增倒影

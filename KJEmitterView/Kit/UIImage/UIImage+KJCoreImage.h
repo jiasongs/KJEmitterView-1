@@ -19,9 +19,9 @@ typedef NS_ENUM(NSInteger, KJCoreImagePhotoshopType) {
     KJCoreImagePhotoshopTypeExposure, /// 曝光度，
     KJCoreImagePhotoshopTypeSharpness, /// 锐化，0 ～ 100
     KJCoreImagePhotoshopTypePower, /// 伽玛调整（调整灰度系数可以有效地改变黑白之间的过渡斜率）0 ～ 1
-    KJCoreImagePhotoshopTypeGaussianBlur, /// 高斯模糊，模糊半径 0 ～
+    KJCoreImagePhotoshopTypeGaussianBlur, /// 高斯模糊，模糊半径 0 ～ 100
 };
-/* 滤镜过滤器 */
+/// 滤镜过滤器
 static NSString * const _Nonnull KJImageFilterTypeStringMap[] = {
     [KJCoreImagePhotoshopTypeBrightnes]  = @"CIColorControls", /// 色彩控制
     [KJCoreImagePhotoshopTypeSaturation] = @"CIColorControls",
