@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.default_subspec = 'Kit'
   s.ios.source_files = 'KJEmitterView/KJEmitterHeader.h' 
-  s.resources = "Resources/*.{png,jpg}" 
+  s.resources = "KJEmitterView/Resources/*.{png,jpg}" 
 
   s.subspec 'Kit' do |y|
     y.source_files = "KJEmitterView/Kit/**/*.{h,m}" 

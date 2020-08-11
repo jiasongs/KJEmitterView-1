@@ -21,11 +21,27 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 /// 字符串转换为非空
-NS_INLINE NSString * kEmptyString(NSString *string){
+NS_INLINE NSString * kString(NSString *string){
     return (string ?: @"");
 }
+/// 字符串是否为空
+NS_INLINE bool kEmptyIsString(NSString *string){
+    return ([string isKindOfClass:[NSNull class]] || string == nil || ([string length] < 1 ? true:false));
+}
+/// 数组是否为空
+NS_INLINE bool kEmptyIsArray(NSArray *array){
+    return (array == nil || [array isKindOfClass:[NSNull class]] || array.count == 0);
+}
+/// 字典是否为空
+NS_INLINE bool kEmptyIsDictionary(NSDictionary *dict){
+    return (dict == nil || [dict isKindOfClass:[NSNull class]] || dict.allKeys == 0);
+}
+/// 对象是否为空
+NS_INLINE bool kEmptyIsObject(NSObject *_object){
+    return (_object == nil || [_object isKindOfClass:[NSNull class]] || ([_object respondsToSelector:@selector(length)] && [(NSData*)_object length] == 0) || ([_object respondsToSelector:@selector(count)] && [(NSArray*)_object count] == 0));
+}
 /// 随机颜色
-NS_INLINE UIColor * kRandomColor(){
+NS_INLINE UIColor * kRandomColor(void){
     return [UIColor colorWithRed:((float)arc4random_uniform(256)/255.0) green:((float)arc4random_uniform(256)/255.0) blue:((float)arc4random_uniform(256)/255.0) alpha:1.0];
 }
 /// 交换方法的实现
@@ -54,7 +70,7 @@ NS_INLINE void kAlertViewAutoDismiss(NSString *message, CGFloat delay){
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
         [alerView show];
-        [alerView performSelector:@selector(dismissWithClickedButtonIndex:animated:) withObject:@[@0, @1] afterDelay:delay];
+        [alerView performSelector:@selector(dismissWithClickedButtonIndex:animated:) withObject:@[@0,@1] afterDelay:delay];
     });
 }
 /// 系统加载动效
