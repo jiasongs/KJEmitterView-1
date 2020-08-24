@@ -9,25 +9,37 @@
 #import "KJSliderVC.h"
 
 @interface KJSliderVC ()
-@property(nonatomic,strong) KJColorSlider *colorSlider;
+
 @end
 
 @implementation KJSliderVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.colorSlider = [[KJColorSlider alloc]initWithFrame:CGRectMake(20, 84, kScreenW-40, 30)];
-    [self.view addSubview:self.colorSlider];
-    _colorSlider.colorHeight = 2.5;
-    _colorSlider.colors = @[UIColorFromHEXA(0xF44336,1), UIColorFromHEXA(0xFFFFFF,1)];
-    _colorSlider.locations = @[@0.2,@0.8];
-    [_colorSlider kj_setUI];
-    _colorSlider.kValueChangeBlock = ^(CGFloat progress) {
+    KJColorSlider *slider = [[KJColorSlider alloc]initWithFrame:CGRectMake(20, 100, kScreenW-40, 30)];
+    slider.value = 0.5;
+    [self.view addSubview:slider];
+    slider.colors = @[UIColorFromHEXA(0xF44336,1), UIColorFromHEXA(0xFFFFFF,1)];
+    slider.locations = @[@0.,@0.8];
+    slider.kValueChangeBlock = ^(CGFloat progress) {
         NSLog(@"progress:%f",progress);
     };
-    _colorSlider.kMoveEndBlock = ^(CGFloat progress) {
+    slider.kMoveEndBlock = ^(CGFloat progress) {
         NSLog(@"end:%f",progress);
     };
+    
+    KJColorSlider *slider2 = [[KJColorSlider alloc] initWithFrame:CGRectMake(20, slider.bottom+30, kScreenW-40, 30)];
+    slider2.value = 0.5;
+    slider2.colors = @[UIColorFromHEXA(0xFF0000,1),UIColorFromHEXA(0xFF7F00,1),UIColorFromHEXA(0xFFFF00,1),UIColorFromHEXA(0x00FF00,1),UIColorFromHEXA(0x00FFFF,1),UIColorFromHEXA(0x0000FF,1),UIColorFromHEXA(0x8B00FF,1)];
+    slider2.locations = @[@0.,@0.16,@(0.16*2),@(0.16*3),@(0.16*4),@(0.16*5),@1.];
+    [self.view addSubview:slider2];
+    
+    KJColorSlider *slider3 = [[KJColorSlider alloc] initWithFrame:CGRectMake(20, slider2.bottom+30, kScreenW-40, 30)];
+    slider3.colorHeight = 28;
+    slider3.borderColor = UIColor.redColor;
+    slider3.borderWidth = 1.5;
+    slider3.value = 0.5;
+    [self.view addSubview:slider3];
 }
 
 @end

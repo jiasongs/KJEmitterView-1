@@ -11,11 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KJColorSlider : UISlider
-/// 颜色数组
+/// 颜色数组，默认白色
 @property(nonatomic,strong) NSArray<UIColor*>*colors;
 /// 每个颜色对应的位置信息
 @property(nonatomic,strong) NSArray<NSNumber*>*locations;
-/// 颜色的高度，默认2px
+/// 颜色的高度，默认2.5px
 @property(nonatomic,assign) CGFloat colorHeight;
 /// 边框宽度，默认0px
 @property(nonatomic,assign) CGFloat borderWidth;

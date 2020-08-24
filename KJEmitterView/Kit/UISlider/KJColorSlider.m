@@ -9,7 +9,7 @@
 #import "KJColorSlider.h"
 #import "UIColor+KJExtension.h"
 @interface KJColorSlider()
-@property(nonatomic,strong) UIImageView *imgView;
+@property(nonatomic,strong) UIImageView *backImageView;
 @property(nonatomic,assign) NSTimeInterval lastTime;
 @end
 
@@ -31,26 +31,28 @@
 }
 - (void)layoutSubviews{
     [super layoutSubviews];
-    if (CGRectEqualToRect(self.imgView.frame, CGRectZero)) {
-        CGRect imgViewFrame = self.imgView.frame;
+    if (CGRectEqualToRect(self.backImageView.frame, CGRectZero)) {
+        CGRect imgViewFrame = self.backImageView.frame;
         imgViewFrame.size.width = self.frame.size.width;
         imgViewFrame.size.height = _colorHeight;
         imgViewFrame.origin.y = (self.frame.size.height - _colorHeight) * 0.5;
-        self.imgView.frame = imgViewFrame;
+        self.backImageView.frame = imgViewFrame;
         [self drawNewImage];
     }
 }
 
 #pragma mark - private method
 - (void)drawNewImage{
-    self.imgView.image = [UIColor kj_colorImageWithColors:_colors locations:_locations size:CGSizeMake(self.frame.size.width, _colorHeight) borderWidth:_borderWidth borderColor:_borderColor];
+    self.backImageView.image = [UIColor kj_colorImageWithColors:_colors locations:_locations size:CGSizeMake(self.frame.size.width, _colorHeight) borderWidth:_borderWidth borderColor:_borderColor];
 }
 - (void)setup{
-    self.colorHeight = 2.;
+    self.colors = @[UIColor.whiteColor];
+    self.locations = @[@(1.)];
+    self.colorHeight = 2.5;
     self.borderWidth = 0.0;
     self.borderColor = UIColor.blackColor;
-    self.imgView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    [self insertSubview:self.imgView atIndex:4];
+    self.backImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    [self insertSubview:self.backImageView atIndex:4];
     self.tintColor = [UIColor clearColor];
     self.maximumTrackTintColor = self.minimumTrackTintColor = [UIColor clearColor];
     [self addTarget:self action:@selector(valueChange) forControlEvents:UIControlEventValueChanged];
