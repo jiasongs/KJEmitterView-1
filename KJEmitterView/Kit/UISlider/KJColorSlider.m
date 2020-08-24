@@ -7,7 +7,7 @@
 //
 
 #import "KJColorSlider.h"
-
+#import "UIColor+KJExtension.h"
 @interface KJColorSlider()
 @property(nonatomic,strong) UIImageView *imgView;
 @property(nonatomic,assign) NSTimeInterval lastTime;
