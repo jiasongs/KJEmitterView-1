@@ -87,4 +87,45 @@
     [[NSScanner scannerWithString:fullHex] scanHexInt:&hexComponent];
     return hexComponent / 255.0;
 }
+
+/// 生成渐变色图片
++ (UIImage*)kj_colorImageWithColors:(NSArray<UIColor*>*)colors locations:(NSArray<NSNumber*>*)locations size:(CGSize)size borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor{
+    NSAssert(colors || locations, @"colors and locations must has value");
+    NSAssert(colors.count == locations.count, @"Please make sure colors and locations count is equal");
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    if (borderWidth > 0 && borderColor) {
+        CGRect rect = CGRectMake(size.width * 0.01, 0, size.width * 0.98, size.height);
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:size.height*0.5];
+        [borderColor setFill];
+        [path fill];
+    }
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(size.width * 0.01 + borderWidth, borderWidth, size.width * 0.98 - borderWidth * 2, size.height - borderWidth * 2) cornerRadius:size.height * 0.5];
+    [self kj_drawLinearGradient:context path:path.CGPath colors:colors locations:locations];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
++ (void)kj_drawLinearGradient:(CGContextRef)context path:(CGPathRef)path colors:(NSArray<UIColor*>*)colors locations:(NSArray<NSNumber*>*)locations{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    NSMutableArray *colorefs = [@[] mutableCopy];
+    [colors enumerateObjectsUsingBlock:^(UIColor *obj, NSUInteger idx, BOOL *stop) {
+        [colorefs addObject:(__bridge id)obj.CGColor];
+    }];
+    CGFloat locs[locations.count];
+    for (int i = 0; i < locations.count; i++) {
+        locs[i] = locations[i].floatValue;
+    }
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colorefs, locs);
+    CGRect pathRect = CGPathGetBoundingBox(path);
+    CGPoint startPoint = CGPointMake(CGRectGetMinX(pathRect), CGRectGetMidY(pathRect));
+    CGPoint endPoint = CGPointMake(CGRectGetMaxX(pathRect), CGRectGetMidY(pathRect));
+    CGContextSaveGState(context);
+    CGContextAddPath(context, path);
+    CGContextClip(context);
+    CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+    CGContextRestoreGState(context);
+    CGGradientRelease(gradient);
+    CGColorSpaceRelease(colorSpace);
+}
 @end

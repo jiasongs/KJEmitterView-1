@@ -81,6 +81,7 @@
         NSMutableArray *temp1 = [NSMutableArray array];
         [temp1 addObject:@{@"VCName":@"KJButtonVC",@"describeName":@"Button图文布局点赞粒子"}];
         [temp1 addObject:@{@"VCName":@"KJViewVC",@"describeName":@"View快速切圆角"}];
+        [temp1 addObject:@{@"VCName":@"KJSliderVC",@"describeName":@"Slider渐变色滑块"}];
         [temp1 addObject:@{@"VCName":@"KJTextViewVC",@"describeName":@"TextView设置限制字数"}];
         [temp1 addObject:@{@"VCName":@"KJFloodImageVC",@"describeName":@"填充同颜色区域图片"}];
         [temp1 addObject:@{@"VCName":@"KJIMageVC",@"describeName":@"加水印和拼接图片"}];

@@ -64,7 +64,7 @@
 *⭐️⭐️⭐️ ----- 本人其他库 ----- ⭐️⭐️⭐️
 *
 粒子效果、Button图文混排、点击事件封装、扩大点击域、点赞粒子效果，
-手势封装、圆角渐变、倒影、投影、内阴影、内外发光处理、Xib属性，
+手势封装、圆角渐变、倒影、投影、内阴影、内外发光、渐变色滑块等，
 图片加工处理、滤镜渲染、泛洪算法、识别网址超链接等等
 pod 'KJEmitterView'
 pod 'KJEmitterView/Function'#
@@ -108,6 +108,10 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 #### <a id="更新日志"></a>更新日志
 ```
 ####版本更新日志:
+#### Add 5.0.4
+1. 新增渐变色滑块 KJColorSlider - 参考作者codepgq
+2. _KJINLINE 封装整理GCD
+
 #### Add 5.0.3
 1. UIImage+KJMask 新增透明图穿透处理
 2. _KJINLINE 新增GCD方法封装处理
@@ -138,7 +142,7 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 1. UIImage+KJProcessing 新增屏幕截图 kj_captureScreenWindow
 2. UIImage+KJProcessing 新增多边形切图 kj_polygonCaptureImageWithImageView:PointArray:
 3. UIImage+KJProcessing 新增不规则图形切图 kj_anomalyCaptureImageWithView:BezierPath
-4. UIImage+KJCompressJoint 新增图片拼接处理
+4. UIImage+KJCompress 新增图片拼接处理
 5. CALayer+KJReflection 新增倒影处理
 
 #### Add 4.6.4
@@ -185,9 +189,6 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 1. UIImage+KJFrame 新增 kj_mergeImageWithFirstImage 合并两张图片 和 kj_waterMark 给图片添加水印
 2. 宏 _KJMacros 中新增 FORMAT 字符串拼接-其他类型转字符串 和 VD_MULTILINE_TEXTSIZE 计算文字尺寸text size(文字尺寸)
 
-#### Add 4.4.5
-1. 修改bug，修改更明显的提示内容
-
 #### Add 4.3.9
 1. 修改Bug
 2. NSMutableArray当中新增 处理空对象方法交换
@@ -199,7 +200,7 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 3. Function文件夹中新增 NSNull+KJSafe 解决后台返回数据为空造成程序崩溃
 
 #### Add 4.3.7
-1. 新增画一些指定图形 UIView+KJAppointView （直线、虚线、五角星、六边形、八边形）
+1. 新增画一些指定图形 UIView+KJAppointView（直线、虚线、五角星、六边形、八边形）
 
 #### Add 4.3.5
 1. 新增改变UIButton的响应区域 扩大点击域 UIButton+KJEnlargeTouchArea

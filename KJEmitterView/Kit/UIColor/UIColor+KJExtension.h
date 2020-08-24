@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 16进制字符串转UIColor
 + (UIColor*)kj_colorWithHexString:(NSString*)hexString;
 
+/// 生成附带边框的渐变色图片
++ (UIImage*)kj_colorImageWithColors:(NSArray<UIColor*>*)colors locations:(NSArray<NSNumber*>*)locations size:(CGSize)size borderWidth:(CGFloat)borderWidth borderColor:(UIColor*)borderColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

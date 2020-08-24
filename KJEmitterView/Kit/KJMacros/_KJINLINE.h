@@ -54,7 +54,7 @@ NS_INLINE void kAlertViewAutoDismiss(NSString *message, CGFloat delay){
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
         [alerView show];
-        [alerView performSelector:@selector(dismissWithClickedButtonIndex:animated:) withObject:@[@0, @1] afterDelay:delay];
+        [alerView performSelector:@selector(dismissWithClickedButtonIndex:animated:) withObject:@[@0,@1] afterDelay:delay];
     });
 }
 /// 系统加载动效
@@ -66,8 +66,8 @@ NS_INLINE id kLoadNibWithName(NSString *name, id owner){
    return [[NSBundle mainBundle] loadNibNamed:name owner:owner options:nil].firstObject;
 }
 /// 加载xib
-NS_INLINE id kLoadNib(NSString *nibName){
-    return [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+NS_INLINE id kLoadNib(NSString *name){
+    return [UINib nibWithNibName:name bundle:[NSBundle mainBundle]];
 }
 /// 校正ScrollView在iOS11上的偏移问题
 NS_INLINE void kAdjustsScrollViewInsetNever(UIViewController *viewController, __kindof UIScrollView *tableView) {
@@ -104,6 +104,11 @@ NS_INLINE void kExitApplication(NSTimeInterval duration,void(^block)(void)) {
     }];
 }
 #pragma mark -------------- GCD 线程处理 -------------
+NS_INLINE dispatch_queue_t kGCD_queue(void) {
+    //    dispatch_queue_t queue = dispatch_queue_create("com.yangkejun.gcd", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    return queue;
+}
 /// 主线程
 NS_INLINE void kGCD_main(dispatch_block_t block) {
     if ([[NSThread currentThread] isMainThread]) {
@@ -114,13 +119,11 @@ NS_INLINE void kGCD_main(dispatch_block_t block) {
 }
 /// 子线程
 NS_INLINE void kGCD_async(dispatch_block_t block) {
-//    dispatch_queue_t queue = dispatch_queue_create("com.yangkejun.gcd", DISPATCH_QUEUE_CONCURRENT);
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, block);
+    dispatch_async(kGCD_queue(), block);
 }
 /// 异步并行队列，携带可变参数（需要nil结尾）
 NS_INLINE void kGCD_group_notify(dispatch_block_t notify,dispatch_block_t block,...) {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = kGCD_queue();
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_async(group, queue, block);
     va_list args;dispatch_block_t arg;
@@ -133,7 +136,7 @@ NS_INLINE void kGCD_group_notify(dispatch_block_t notify,dispatch_block_t block,
 }
 /// 栅栏
 NS_INLINE dispatch_queue_t kGCD_barrier(dispatch_block_t block,dispatch_block_t barrier) {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = kGCD_queue();
     dispatch_async(queue, block);
     dispatch_barrier_async(queue, ^{ dispatch_async(dispatch_get_main_queue(), barrier); });
     return queue;
@@ -145,20 +148,20 @@ NS_INLINE void kGCD_once(dispatch_block_t block) {
 }
 /// 延时执行
 NS_INLINE void kGCD_after(int64_t delayInSeconds, dispatch_block_t block) {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = kGCD_queue();
     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(time, queue, block);
 }
 /// 快速迭代
 NS_INLINE void kGCD_apply(int iterations, void(^block)(size_t idx)) {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = kGCD_queue();
     dispatch_apply(iterations, queue, block);
 }
 /// 计时器
 static dispatch_source_t timer = nil;
 NS_INLINE dispatch_source_t kGCD_timer(int64_t delayInSeconds, dispatch_block_t block) {
     if (timer) dispatch_source_cancel(timer);
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = kGCD_queue();
     timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     dispatch_source_set_timer(timer, dispatch_walltime(nil, 0), delayInSeconds * NSEC_PER_SEC, 0);
     dispatch_source_set_event_handler(timer, block);
