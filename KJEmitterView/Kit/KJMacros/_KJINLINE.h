@@ -13,6 +13,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <objc/message.h>
+#import "UIColor+KJExtension.h"
 
 /// 这里只适合放简单的函数
 NS_ASSUME_NONNULL_BEGIN
@@ -20,10 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-/// 字符串转换为非空
-NS_INLINE NSString * kEmptyString(NSString *string){
-    return (string ?: @"");
-}
 /// 随机颜色
 NS_INLINE UIColor * kRandomColor(){
     return [UIColor colorWithRed:((float)arc4random_uniform(256)/255.0) green:((float)arc4random_uniform(256)/255.0) blue:((float)arc4random_uniform(256)/255.0) alpha:1.0];
@@ -37,6 +34,32 @@ NS_INLINE void kMethod_swizzling(Class clazz, SEL originalSelector, SEL swizzled
     }else {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
+}
+/// 透明图片穿透
+NS_INLINE bool kTransparentImage(UIImageView *imageView, CGPoint point){
+    UIColor *uColor = [UIColor kj_colorAtImageView:imageView Point:point];
+    const CGFloat *components = CGColorGetComponents(uColor.CGColor);
+    if (NULL != components) {
+        float aplphaF = components[3];
+        if ((aplphaF >= 0.01)) return false;
+    }
+    return true;
+}
+/// 字符串是否为空
+NS_INLINE bool kEmptyString(NSString *string){
+    return ([string isKindOfClass:[NSNull class]] || string == nil || [string length] < 1 ? YES : NO);
+}
+/// 数组是否为空
+NS_INLINE bool kEmptyArray(NSArray *array){
+    return (array == nil || [array isKindOfClass:[NSNull class]] || array.count == 0);
+}
+/// 字典是否为空
+NS_INLINE bool kEmptyDictionary(NSDictionary *dic){
+    return (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0);
+}
+/// 是否是空对象
+NS_INLINE bool kEmptyObject(NSObject *object){
+    return (object == nil || [object isKindOfClass:[NSNull class]] || ([object respondsToSelector:@selector(length)] && [(NSData*)object length] == 0) || ([object respondsToSelector:@selector(count)] && [(NSArray*)object count] == 0));
 }
 
 #pragma mark -------------- UI处理 -------------

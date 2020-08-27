@@ -30,7 +30,7 @@ typedef struct KJColorHSL {
 /// 生成附带边框的渐变色图片
 + (UIImage*)kj_colorImageWithColors:(NSArray<UIColor*>*)colors locations:(NSArray<NSNumber*>*)locations size:(CGSize)size borderWidth:(CGFloat)borderWidth borderColor:(UIColor*)borderColor;
 
-/// UIColor转#ffffff格式的16进制字符串
+/// UIColor转16进制字符串
 + (NSString*)kj_hexStringFromColor:(UIColor*)color;
 /// 16进制字符串转UIColor
 + (UIColor*)kj_colorWithHexString:(NSString*)hexString;
@@ -39,6 +39,11 @@ typedef struct KJColorHSL {
 - (KJColorRGBA)kj_colorGetRGBA;
 /// 获取颜色对应的色相饱和度和透明度
 - (KJColorHSL)kj_colorGetHSL;
+
+/// 获取图片上指定点的颜色
++ (UIColor*)kj_colorAtImage:(UIImage*)image Point:(CGPoint)point;
+/// 获取ImageView上指定点的图片颜色
++ (UIColor*)kj_colorAtImageView:(UIImageView*)imageView Point:(CGPoint)point;
 
 @end
 

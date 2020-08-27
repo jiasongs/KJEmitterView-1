@@ -48,41 +48,41 @@
 }
 /// 16进制字符串转UIColor
 + (UIColor*)kj_colorWithHexString:(NSString*)hexString {
-    NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
-    CGFloat alpha, red, blue, green;
+    NSString *colorString = [[hexString stringByReplacingOccurrencesOfString:@"#" withString:@""] uppercaseString];
+    CGFloat alpha,red,blue,green;
     switch ([colorString length]) {
         case 3: // #RGB
             alpha = 1.0f;
-            red   = [self colorComponentFrom: colorString start: 0 length: 1];
-            green = [self colorComponentFrom: colorString start: 1 length: 1];
-            blue  = [self colorComponentFrom: colorString start: 2 length: 1];
+            red   = [self colorComponentFrom:colorString start:0 length:1];
+            green = [self colorComponentFrom:colorString start:1 length:1];
+            blue  = [self colorComponentFrom:colorString start:2 length:1];
             break;
         case 4: // #ARGB
-            alpha = [self colorComponentFrom: colorString start: 0 length: 1];
-            red   = [self colorComponentFrom: colorString start: 1 length: 1];
-            green = [self colorComponentFrom: colorString start: 2 length: 1];
-            blue  = [self colorComponentFrom: colorString start: 3 length: 1];
+            alpha = [self colorComponentFrom:colorString start:0 length:1];
+            red   = [self colorComponentFrom:colorString start:1 length:1];
+            green = [self colorComponentFrom:colorString start:2 length:1];
+            blue  = [self colorComponentFrom:colorString start:3 length:1];
             break;
         case 6: // #RRGGBB
             alpha = 1.0f;
-            red   = [self colorComponentFrom: colorString start: 0 length: 2];
-            green = [self colorComponentFrom: colorString start: 2 length: 2];
-            blue  = [self colorComponentFrom: colorString start: 4 length: 2];
+            red   = [self colorComponentFrom:colorString start:0 length:2];
+            green = [self colorComponentFrom:colorString start:2 length:2];
+            blue  = [self colorComponentFrom:colorString start:4 length:2];
             break;
         case 8: // #AARRGGBB
-            alpha = [self colorComponentFrom: colorString start: 0 length: 2];
-            red   = [self colorComponentFrom: colorString start: 2 length: 2];
-            green = [self colorComponentFrom: colorString start: 4 length: 2];
-            blue  = [self colorComponentFrom: colorString start: 6 length: 2];
+            alpha = [self colorComponentFrom:colorString start:0 length:2];
+            red   = [self colorComponentFrom:colorString start:2 length:2];
+            green = [self colorComponentFrom:colorString start:4 length:2];
+            blue  = [self colorComponentFrom:colorString start:6 length:2];
             break;
         default:
             return nil;
     }
-    return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 + (CGFloat)colorComponentFrom:(NSString*)string start:(NSUInteger)start length:(NSUInteger)length {
     NSString *substring = [string substringWithRange:NSMakeRange(start,length)];
-    NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat: @"%@%@",substring,substring];
+    NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat:@"%@%@",substring,substring];
     unsigned hexComponent;
     [[NSScanner scannerWithString:fullHex] scanHexInt:&hexComponent];
     return hexComponent / 255.0;
@@ -148,7 +148,7 @@
     CGFloat hue = 0;
     CGFloat saturation = 0;
     CGFloat light = 0;
-    CGFloat min = MIN(red,(MIN(green,blue)));
+    CGFloat min = MIN(red,MIN(green,blue));
     CGFloat max = MAX(red,MAX(green,blue));
     if (min==max) {
         hue = 0;
@@ -174,4 +174,42 @@
     hue = (2 * hue - 1) * M_PI;
     return (KJColorHSL){hue,saturation,light};
 }
+/// 获取ImageView上指定点的图片颜色
++ (UIColor*)kj_colorAtImageView:(UIImageView*)imageView Point:(CGPoint)point{
+    return [self kj_colorAtPixel:point Size:imageView.frame.size Image:imageView.image];
+}
+/// 获取图片上指定点的颜色
++ (UIColor*)kj_colorAtImage:(UIImage*)image Point:(CGPoint)point{
+    return [self kj_colorAtPixel:point Size:image.size Image:image];
+}
++ (UIColor*)kj_colorAtPixel:(CGPoint)point Size:(CGSize)size Image:(UIImage*)image{
+    CGRect rect = CGRectMake(0,0,size.width,size.height);
+    if (!CGRectContainsPoint(rect, point)) return nil;
+    NSInteger pointX = trunc(point.x);
+    NSInteger pointY = trunc(point.y);
+    CGImageRef cgImage = image.CGImage;
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    int bytesPerPixel = 4;
+    int bytesPerRow = bytesPerPixel * 1;
+    NSUInteger bitsPerComponent = 8;
+    unsigned char pixelData[4] = { 0, 0, 0, 0 };
+    CGContextRef context = CGBitmapContextCreate(pixelData,
+                                                 1,
+                                                 1,
+                                                 bitsPerComponent,
+                                                 bytesPerRow,
+                                                 colorSpace,
+                                                 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+    CGColorSpaceRelease(colorSpace);
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
+    CGContextTranslateCTM(context, -pointX, pointY - size.height);
+    CGContextDrawImage(context, rect, cgImage);
+    CGContextRelease(context);
+    CGFloat red   = (CGFloat)pixelData[0] / 255.0f;
+    CGFloat green = (CGFloat)pixelData[1] / 255.0f;
+    CGFloat blue  = (CGFloat)pixelData[2] / 255.0f;
+    CGFloat alpha = (CGFloat)pixelData[3] / 255.0f;
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 @end
