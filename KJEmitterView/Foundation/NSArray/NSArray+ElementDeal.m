@@ -153,7 +153,7 @@
     return arr;
 }
 
-/** 生成一组不重复的随机数 */
+/// 生成一组不重复的随机数
 - (NSArray*)kj_noRepeatRandomArrayWithMinNum:(NSInteger)min maxNum:(NSInteger )max count:(NSInteger)count{
     NSMutableSet *set = [NSMutableSet setWithCapacity:count];
     while (set.count < count) {

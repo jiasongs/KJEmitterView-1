@@ -50,7 +50,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     return self;
 }
 
-/** draw */
+/// draw
 - (void)drawInContext:(CGContextRef)ctx {
     UIBezierPath *bezierLeft = [UIBezierPath bezierPathWithOvalInRect:_eyeRect];
     UIBezierPath *bezierRight = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(_eyeDistance, _eyeRect.origin.y, _eyeRect.size.width, _eyeRect.size.height)];
@@ -74,7 +74,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     CGContextFillPath(ctx);
 }
 
-/** key animation */
+/// key animation
 + (BOOL)needsDisplayForKey:(NSString *)key{
     if ([key isEqual:@"mouthOffSet"]) {
         return YES;
@@ -90,21 +90,21 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
 
 @interface KJSwitchControl()<CAAnimationDelegate>
 
-/** switch background view */
+/// switch background view
 @property(nonatomic,strong) UIView *backgroundView;
-/** face layer */
+/// face layer
 @property(nonatomic,strong) CAShapeLayer *circleFaceLayer;
-/** paddingWidth */
+/// paddingWidth
 @property(nonatomic,assign) CGFloat paddingWidth;
-/** eyes layer */
+/// eyes layer
 @property(nonatomic,strong) KJFaceLayer *eyesLayer;
-/** face radius */
+/// face radius
 @property(nonatomic,assign) CGFloat circleFaceRadius;
-/** the faceLayer move distance */
+/// the faceLayer move distance
 @property(nonatomic,assign) CGFloat moveDistance;
-/** whether is animated */
+/// whether is animated
 @property(nonatomic,assign) BOOL isAnimating;
-/** 笑脸Layer宽度 */
+/// 笑脸Layer宽度
 @property(nonatomic,assign) CGFloat faceLayerWidth;
 
 @end
@@ -129,10 +129,10 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
 }
 
 - (void)configure{
-    /** check the switch width and height */
+    /// check the switch width and height
     NSAssert(self.frame.size.width >= self.frame.size.height, @"width must be tall");
     
-    /** init property */
+    /// init property
     _onColor = [UIColor colorWithRed:73/255.0 green:182/255.0 blue:235/255.0 alpha:1.f];
     _offColor = [UIColor colorWithRed:211/255.0 green:207/255.0 blue:207/255.0 alpha:1.f];
     _faceColor = UIColor.whiteColor;
@@ -143,7 +143,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     _on = NO;
     _isAnimating = NO;
     
-    /** setting init property */
+    /// setting init property
     self.backgroundView.backgroundColor = _offColor;
     self.circleFaceLayer.fillColor = _faceColor.CGColor;
     self.faceLayerWidth = self.circleFaceLayer.frame.size.width;
@@ -344,7 +344,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     }
 }
 
-/** add mouth keyFrameAnimation */
+/// add mouth keyFrameAnimation
 - (void)eyesKeyFrameAnimationStart {
     CAKeyframeAnimation *keyAnimation = [self mouthKeyFrameAnimationWidthOffSet:_eyesLayer.frame.size.width on:_on];
     [_eyesLayer addAnimation:keyAnimation forKey:MouthFrameAnimationKey];
@@ -355,7 +355,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
 }
 
 #pragma mark - 动画方法
-/** faceLayer move animation */
+/// faceLayer move animation
 - (CABasicAnimation *)moveAnimationWithFromPosition:(CGPoint)fromPosition toPosition:(CGPoint)toPosition {
     CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
     moveAnimation.fromValue = [NSValue valueWithCGPoint:fromPosition];
@@ -367,7 +367,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     return moveAnimation;
 }
 
-/** layer background color animation */
+/// layer background color animation
 - (CABasicAnimation *)backgroundColorAnimationFromValue:(NSValue *)fromValue toValue:(NSValue *)toValue {
     CABasicAnimation *colorAnimation = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
     colorAnimation.fromValue = fromValue;
@@ -378,7 +378,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     return colorAnimation;
 }
 
-/** the eyes layer move */
+/// the eyes layer move
 - (CABasicAnimation *)eyeMoveAnimationFromValue:(NSValue *)fromValue toValue:(NSValue *)toValue{
     CABasicAnimation *moveAnimation = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
     moveAnimation.fromValue = fromValue;
@@ -390,7 +390,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     return moveAnimation;
 }
 
-/** mouth key frame animation */
+/// mouth key frame animation
 - (CAKeyframeAnimation *)mouthKeyFrameAnimationWidthOffSet:(CGFloat)offSet on:(BOOL)on{
     CGFloat frameNumber = _animationDuration * 60 / 3;
     CGFloat frameValue = on ? offSet : 0;
@@ -414,7 +414,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     return keyAnimation;
 }
 
-/** eyes close and open key frame animation */
+/// eyes close and open key frame animation
 - (CAKeyframeAnimation *)eyesCloseAndOpenAnimationWithRect:(CGRect)rect {
     CGFloat frameNumber = _animationDuration * 180 / 9; // 180 frame erver second
     CGFloat eyesX = rect.origin.x;

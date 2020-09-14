@@ -13,19 +13,19 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol KJSwitchControlDelegate;
 @interface KJSwitchControl : UIControl
 
-/** 打开颜色,默认蓝色 */
+/// 打开颜色,默认蓝色
 @property(nonatomic,strong) IBInspectable UIColor *onColor;
-/** 关闭颜色,默认灰色 */
+/// 关闭颜色,默认灰色
 @property(nonatomic,strong) IBInspectable UIColor *offColor;
-/** 笑脸颜色,默认白色 */
+/// 笑脸颜色,默认白色
 @property(nonatomic,strong) IBInspectable UIColor *faceColor;
-/** 动画持续时间,默认1.2秒 */
+/// 动画持续时间,默认1.2秒
 @property(nonatomic,assign) IBInspectable CGFloat animationDuration;
-/** 控件状态,默认关闭 */
+/// 控件状态,默认关闭
 @property(nonatomic,assign) IBInspectable BOOL on;
-/** 委托代理 */
+/// 委托代理
 @property(nonatomic,weak) id <KJSwitchControlDelegate> delegate;
-/** 设置控件动态状态 */
+/// 设置控件动态状态
 - (void)setSwitchControlIsOn:(BOOL)on animated:(BOOL)animated;
 
 @end

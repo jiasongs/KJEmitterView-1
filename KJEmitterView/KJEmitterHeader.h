@@ -44,7 +44,12 @@
  */
 /*
  ####版本更新日志:
- #### Add 5.0.4
+ #### Add 5.0.6
+ 1. UIColor+KJExtension2 新增颜色扩展处理
+ 2. UIButton+KJCreate 按钮快速创建
+ 3. UILabel+KJCreate 文本快速创建
+ 
+ #### Add 5.0.5
  1. 新增渐变色滑块 KJColorSlider - 参考作者codepgq
  2. _KJINLINE 封装整理GCD
  
@@ -191,8 +196,10 @@
 //#import "UIButton+KJIndicator.h" // 指示器
 //#import "UIButton+KJEmitter.h" // 按钮粒子效果
 //#import "UIButton+KJCountDown.h" // 倒计时
+#import "UIButton+KJCreate.h" /// 快速创建按钮
 
 //#import "UILabel+KJAttributedString.h" // 富文本
+#import "UILabel+KJCreate.h" /// 快速创建文本
 
 #import "UIView+KJXib.h"   // Xib
 #import "UIView+KJFrame.h" // Frame - 轻量级布局
@@ -211,6 +218,7 @@
 //#import "UITextView+KJHyperlink.h" // 超链接处理
 
 #import "UIColor+KJExtension.h" /// 颜色相关扩展
+#import "UIColor+KJExtension2.h"
 
 #import "UIImage+KJScale.h"  /// 图片尺寸处理相关
 #import "UIImage+KJCompress.h" /// 图片压缩处理

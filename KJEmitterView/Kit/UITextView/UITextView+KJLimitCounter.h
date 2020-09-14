@@ -9,15 +9,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UITextView (KJLimitCounter)
-/** 限制字数*/
+/// 限制字数
 @property(nonatomic,assign)NSInteger kj_LimitCount;
-/** lab的右边距(默认10)*/
+/// lab的右边距(默认10)
 @property(nonatomic,assign)CGFloat kj_LabMargin;
-/** lab的高度(默认20)*/
+/// lab的高度(默认20)
 @property(nonatomic,assign)CGFloat kj_LabHeight;
-/** lab的文字大小(默认12)*/
+/// lab的文字大小(默认12)
 @property(nonatomic,strong)UIFont *kj_LabFont;
-/** 统计限制字数Label*/
+/// 统计限制字数Label
 @property(nonatomic,readonly)UILabel *kj_InputLimitLabel;
 @end
 NS_ASSUME_NONNULL_END

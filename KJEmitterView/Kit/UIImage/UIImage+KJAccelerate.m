@@ -184,7 +184,7 @@
     return outputImage;
 }
 #pragma mark - 形态操作
-/** 均衡运算 */
+/// 均衡运算
 - (UIImage*)kj_equalizationImage{
     const size_t width = self.size.width;
     const size_t height = self.size.height;
@@ -208,7 +208,7 @@
     CGContextRelease(bmContext);
     return destImage;
 }
-/** 侵蚀 */
+/// 侵蚀
 - (UIImage *)kj_erodeImage{
     const size_t width = self.size.width;
     const size_t height = self.size.height;
@@ -237,7 +237,7 @@
     CGContextRelease(bmContext);
     return eroded;
 }
-/** 形态膨胀/扩张 */
+/// 形态膨胀/扩张
 - (UIImage *)kj_dilateImage{
     const size_t width = self.size.width;
     const size_t height = self.size.height;
@@ -266,7 +266,7 @@
     CGContextRelease(bmContext);
     return dilated;
 }
-/** 多倍侵蚀 */
+/// 多倍侵蚀
 - (UIImage *)kj_erodeImageWithIterations:(int)iterations{
     UIImage *dstImage = self;
     for (int i=0; i<iterations; i++) {
@@ -274,7 +274,7 @@
     }
     return dstImage;
 }
-/** 形态多倍膨胀/扩张 */
+/// 形态多倍膨胀/扩张
 - (UIImage *)kj_dilateImageWithIterations:(int)iterations{
     UIImage *dstImage = self;
     for (int i=0; i<iterations; i++) {
@@ -282,20 +282,20 @@
     }
     return dstImage;
 }
-/** 梯度 */
+/// 梯度
 - (UIImage *)kj_gradientImageWithIterations:(int)iterations{
     UIImage *dilated = [self kj_dilateImageWithIterations:iterations];
     UIImage *eroded = [self kj_erodeImageWithIterations:iterations];
     UIImage *dstImage = [dilated kj_imageBlendedWithImage:eroded blendMode:kCGBlendModeDifference alpha:1.0];
     return dstImage;
 }
-/** 顶帽运算 */
+/// 顶帽运算
 - (UIImage *)kj_tophatImageWithIterations:(int)iterations {
     UIImage *dilated = [self kj_dilateImageWithIterations:iterations];
     UIImage *dstImage = [self kj_imageBlendedWithImage:dilated blendMode:kCGBlendModeDifference alpha:1.0];
     return dstImage;
 }
-/** 黑帽运算 */
+/// 黑帽运算
 - (UIImage *)kj_blackhatImageWithIterations:(int)iterations {
     UIImage *eroded = [self kj_erodeImageWithIterations:iterations];
     UIImage *dstImage = [eroded kj_imageBlendedWithImage:self blendMode:kCGBlendModeDifference alpha:1.0];

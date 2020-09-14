@@ -108,7 +108,12 @@ pod 'KJEmitterView/Classes' # 粒子效果相关
 #### <a id="更新日志"></a>更新日志
 ```
 ####版本更新日志:
-#### Add 5.0.4
+#### Add 5.0.6
+1. UIColor+KJExtension2 新增颜色扩展处理
+2. UIButton+KJCreate 按钮快速创建
+3. UILabel+KJCreate 文本快速创建
+
+#### Add 5.0.5
 1. 新增渐变色滑块 KJColorSlider - 参考作者codepgq
 2. _KJINLINE 封装整理GCD
 

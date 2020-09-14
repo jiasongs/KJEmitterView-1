@@ -86,7 +86,7 @@
     objc_setAssociatedObject(self, @selector(explosionLayer), explosionLayer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-/**开始动画 */
+/// 开始动画
 - (void)buttonAnimation{
     //CABasicAnimation只能从一个数值(fromValue)变到另一个数值(toValue)，而CAKeyframeAnimation会使用一个NSArray保存这些数值
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
@@ -109,7 +109,7 @@
      */
 }
 
-/** 开始喷射 */
+/// 开始喷射
 - (void)startAnimate {
     /// 粒子开始喷射时间
     self.explosionLayer.beginTime = CACurrentMediaTime();
@@ -119,7 +119,7 @@
     [self performSelector:@selector(stop) withObject:nil afterDelay:0.2];
 }
 
-/** 停止喷射 */
+/// 停止喷射
 - (void)stop {
     [self.explosionLayer setValue:@0 forKeyPath:@"emitterCells.explosion.birthRate"];
 }

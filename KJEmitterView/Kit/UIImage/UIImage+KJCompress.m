@@ -11,11 +11,11 @@
 @implementation UIImage (KJCompress)
 
 #pragma mark - 压缩图片处理
-/** 压缩图片精确至指定Data大小, 只需循环3次, 并且保持图片不失真 */
+/// 压缩图片精确至指定Data大小, 只需循环3次, 并且保持图片不失真
 - (UIImage*)kj_compressTargetByte:(NSUInteger)maxLength{
     return [UIImage kj_compressImage:self TargetByte:maxLength];
 }
-/** 压缩图片精确至指定Data大小, 只需循环3次, 并且保持图片不失真 */
+/// 压缩图片精确至指定Data大小, 只需循环3次, 并且保持图片不失真
 + (UIImage *)kj_compressImage:(UIImage *)image TargetByte:(NSUInteger)maxLength {
     // Compress by quality
     CGFloat compression = 1.;

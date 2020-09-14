@@ -22,6 +22,9 @@
 		6813E4A022B8B12E00D4772D /* NSArray+KJOverstep.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813E49F22B8B12E00D4772D /* NSArray+KJOverstep.m */; };
 		6813E4A322B8B29400D4772D /* NSDictionary+KJNilSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813E4A222B8B29400D4772D /* NSDictionary+KJNilSafe.m */; };
 		6813E4A722B8B4C700D4772D /* NSNull+KJSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6813E4A622B8B4C700D4772D /* NSNull+KJSafe.m */; };
+		681EE6A7250F0E24001B2402 /* UIColor+KJExtension2.m in Sources */ = {isa = PBXBuildFile; fileRef = 681EE6A6250F0E24001B2402 /* UIColor+KJExtension2.m */; };
+		681EE6AA250F12C3001B2402 /* UIButton+KJCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 681EE6A9250F12C3001B2402 /* UIButton+KJCreate.m */; };
+		681EE6AD250F1B73001B2402 /* UILabel+KJCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 681EE6AC250F1B73001B2402 /* UILabel+KJCreate.m */; };
 		6835B5AC24CB6C4A0055C80E /* UIImage+KJCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835B5AB24CB6C4A0055C80E /* UIImage+KJCapture.m */; };
 		6835B5AF24CB6CF00055C80E /* UIImage+KJMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835B5AE24CB6CF00055C80E /* UIImage+KJMask.m */; };
 		68443A812473CCD900D44496 /* KJCoreImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 68443A7F2473CCD900D44496 /* KJCoreImageVC.m */; };
@@ -129,6 +132,12 @@
 		6813E4A222B8B29400D4772D /* NSDictionary+KJNilSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+KJNilSafe.m"; sourceTree = "<group>"; };
 		6813E4A522B8B4C700D4772D /* NSNull+KJSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+KJSafe.h"; sourceTree = "<group>"; };
 		6813E4A622B8B4C700D4772D /* NSNull+KJSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+KJSafe.m"; sourceTree = "<group>"; };
+		681EE6A5250F0E24001B2402 /* UIColor+KJExtension2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+KJExtension2.h"; sourceTree = "<group>"; };
+		681EE6A6250F0E24001B2402 /* UIColor+KJExtension2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+KJExtension2.m"; sourceTree = "<group>"; };
+		681EE6A8250F12C3001B2402 /* UIButton+KJCreate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+KJCreate.h"; sourceTree = "<group>"; };
+		681EE6A9250F12C3001B2402 /* UIButton+KJCreate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+KJCreate.m"; sourceTree = "<group>"; };
+		681EE6AB250F1B73001B2402 /* UILabel+KJCreate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+KJCreate.h"; sourceTree = "<group>"; };
+		681EE6AC250F1B73001B2402 /* UILabel+KJCreate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+KJCreate.m"; sourceTree = "<group>"; };
 		6835B5AA24CB6C4A0055C80E /* UIImage+KJCapture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+KJCapture.h"; sourceTree = "<group>"; };
 		6835B5AB24CB6C4A0055C80E /* UIImage+KJCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+KJCapture.m"; sourceTree = "<group>"; };
 		6835B5AD24CB6CF00055C80E /* UIImage+KJMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+KJMask.h"; sourceTree = "<group>"; };
@@ -337,6 +346,8 @@
 			children = (
 				685CE15B22562085004E3AF4 /* UILabel+KJAttributedString.h */,
 				685CE15C22562085004E3AF4 /* UILabel+KJAttributedString.m */,
+				681EE6AB250F1B73001B2402 /* UILabel+KJCreate.h */,
+				681EE6AC250F1B73001B2402 /* UILabel+KJCreate.m */,
 			);
 			path = UILabel;
 			sourceTree = "<group>";
@@ -567,6 +578,8 @@
 			children = (
 				68A08FD623BB2A8A005ECCD0 /* UIColor+KJExtension.h */,
 				68A08FD723BB2A8A005ECCD0 /* UIColor+KJExtension.m */,
+				681EE6A5250F0E24001B2402 /* UIColor+KJExtension2.h */,
+				681EE6A6250F0E24001B2402 /* UIColor+KJExtension2.m */,
 			);
 			path = UIColor;
 			sourceTree = "<group>";
@@ -677,6 +690,8 @@
 				68A08FD023BAE319005ECCD0 /* UIButton+KJCountDown.m */,
 				68A08FD223BB19F7005ECCD0 /* UIButton+KJIndicator.h */,
 				68A08FD323BB19F7005ECCD0 /* UIButton+KJIndicator.m */,
+				681EE6A8250F12C3001B2402 /* UIButton+KJCreate.h */,
+				681EE6A9250F12C3001B2402 /* UIButton+KJCreate.m */,
 			);
 			path = UIButton;
 			sourceTree = "<group>";
@@ -853,6 +868,7 @@
 				6866171823975BFC000F6F79 /* UITextView+KJHyperlink.m in Sources */,
 				68AEE23F22A6169600167F83 /* UIView+KJGestureBlock.m in Sources */,
 				6813E4A022B8B12E00D4772D /* NSArray+KJOverstep.m in Sources */,
+				681EE6AA250F12C3001B2402 /* UIButton+KJCreate.m in Sources */,
 				68AC7049244D4007000D5748 /* UIImage+KJCompress.m in Sources */,
 				68BA6C3321B303D40013C4AD /* UITextView+KJPlaceHolder.m in Sources */,
 				68E166D0234F4D5B008E8A80 /* UIViewController+KJFullScreen.m in Sources */,
@@ -880,6 +896,8 @@
 				686FC7452457DA8E00668666 /* KJShadowLayer.m in Sources */,
 				68C264DC2463A0DF005266CB /* UIImage+KJPhotoshop.m in Sources */,
 				687115CA22631201009EC3E0 /* KJSelectControl.m in Sources */,
+				681EE6A7250F0E24001B2402 /* UIColor+KJExtension2.m in Sources */,
+				681EE6AD250F1B73001B2402 /* UILabel+KJCreate.m in Sources */,
 				68B0301521B2FBC400349510 /* KJEmitterView.m in Sources */,
 				680D0A4D2315186F0029A5FC /* KJEmiterLayerVC.m in Sources */,
 				687115DA22633BCA009EC3E0 /* KJSwitchControl.m in Sources */,

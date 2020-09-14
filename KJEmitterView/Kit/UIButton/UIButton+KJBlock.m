@@ -13,19 +13,19 @@
 
 /*********************** Block ************************/
 static char ActionTag;
-/** button 添加点击事件 默认点击方式UIControlEventTouchUpInside */
+/// button 添加点击事件 默认点击方式UIControlEventTouchUpInside
 - (void)kj_addAction:(KJButtonBlock)block {
     objc_setAssociatedObject(self, &ActionTag, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
     [self addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-/** button 添加事件 controlEvents 点击的方式 */
+/// button 添加事件 controlEvents 点击的方式
 - (void)kj_addAction:(KJButtonBlock)block forControlEvents:(UIControlEvents)controlEvents {
     objc_setAssociatedObject(self, &ActionTag, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
     [self addTarget:self action:@selector(action:) forControlEvents:controlEvents];
 }
 
-/** button 事件的响应方法 */
+/// button 事件的响应方法
 - (void)action:(id)sender {
     KJButtonBlock blockAction = (KJButtonBlock)objc_getAssociatedObject(self, &ActionTag);
     if (blockAction) blockAction(self);
@@ -58,7 +58,7 @@ static char ActionTag;
 - (void)setKj_AcceptDealTime:(NSTimeInterval)kj_AcceptDealTime{
     objc_setAssociatedObject(self, @selector(kj_AcceptDealTime), @(kj_AcceptDealTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-/** 上一次时间 */
+/// 上一次时间
 - (NSTimeInterval)kLastTime{
     return [objc_getAssociatedObject(self, @selector(kLastTime)) doubleValue];
 }

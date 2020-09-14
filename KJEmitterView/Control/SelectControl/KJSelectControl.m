@@ -46,9 +46,6 @@ static CGFloat hookBounceAmount = 0.1;
 }
 
 - (void)configure{
-    /** check the control width and height */
-//    NSAssert(self.frame.size.width == self.frame.size.height, @"width must equals height");
-    
     isSelect = NO;
     self.backgroundColor = UIColor.clearColor;
     tempCircle = [CAShapeLayer layer];

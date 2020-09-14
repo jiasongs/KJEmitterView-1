@@ -9,19 +9,6 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
-/// RGBA
-typedef struct KJColorRGBA {
-    float red;
-    float green;
-    float blue;
-    float alpha;
-}KJColorRGBA;
-/// 色相饱和度和亮度
-typedef struct KJColorHSL {
-    float hue;/// 色相 -π ~ π
-    float saturation; /// 饱和度 0 ~ 1
-    float light; /// 亮度 0 ~ 1
-}KJColorHSL;
 @interface UIColor (KJExtension)
 /// 竖直渐变颜色
 - (UIColor*)kj_gradientVerticalToColor:(UIColor*)color Height:(NSInteger)height;
@@ -34,11 +21,6 @@ typedef struct KJColorHSL {
 + (NSString*)kj_hexStringFromColor:(UIColor*)color;
 /// 16进制字符串转UIColor
 + (UIColor*)kj_colorWithHexString:(NSString*)hexString;
-
-/// 获取颜色对应的RGBA
-- (KJColorRGBA)kj_colorGetRGBA;
-/// 获取颜色对应的色相饱和度和透明度
-- (KJColorHSL)kj_colorGetHSL;
 
 /// 获取图片上指定点的颜色
 + (UIColor*)kj_colorAtImage:(UIImage*)image Point:(CGPoint)point;

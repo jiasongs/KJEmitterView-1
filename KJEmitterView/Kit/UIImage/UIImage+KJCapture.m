@@ -9,11 +9,11 @@
 #import "UIImage+KJCapture.h"
 
 @implementation UIImage (KJCapture)
-/** 屏幕截图 */
+/// 屏幕截图
 + (UIImage*)kj_captureScreen:(UIView*)view{
     return [UIImage kj_captureScreen:view Rect:view.frame];
 }
-/** 指定位置屏幕截图 */
+/// 指定位置屏幕截图
 + (UIImage*)kj_captureScreen:(UIView*)view Rect:(CGRect)rect{
     return ({
         UIGraphicsBeginImageContext(view.frame.size);
@@ -24,7 +24,7 @@
         newImage;
     });
 }
-/** 截取当前屏幕 */
+/// 截取当前屏幕
 + (UIImage*)kj_captureScreenWindow{
     CGSize imageSize = [UIScreen mainScreen].bounds.size;
     UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
@@ -46,7 +46,7 @@
     UIGraphicsEndImageContext();
     return image;
 }
-/** 截取当前屏幕 */
+/// 截取当前屏幕
 + (UIImage*)kj_captureScreenWindowForInterfaceOrientation{
     CGSize imageSize = CGSizeZero;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -87,7 +87,7 @@
 }
 
 #pragma mark - 裁剪处理
-/** 不规则图形切图 */
+/// 不规则图形切图
 + (UIImage*)kj_anomalyCaptureImageWithView:(UIView*)view BezierPath:(UIBezierPath*)path{
     CAShapeLayer *maskLayer= [CAShapeLayer layer];
     maskLayer.path = path.CGPath;

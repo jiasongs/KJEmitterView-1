@@ -9,29 +9,29 @@
 #import <UIKit/UIKit.h>
 NS_ASSUME_NONNULL_BEGIN
 @interface UIView (KJFrame)
-//右边距离
+/// 右边距离
 @property (nonatomic,assign)CGFloat right;
-//底部
+/// 底部
 @property (nonatomic,assign)CGFloat bottom;
-//x坐标属性
+/// x坐标属性
 @property (nonatomic,assign)CGFloat x;
-//y坐标
+/// y坐标
 @property (nonatomic,assign)CGFloat y;
-//宽度
+/// 宽度
 @property (nonatomic,assign)CGFloat width;
-//高度
+/// 高度
 @property (nonatomic,assign)CGFloat height;
-//大小
+/// 大小
 @property (nonatomic,assign)CGSize size;
-//位置
+/// 位置
 @property (nonatomic,assign)CGPoint origin;
-//中心点x
+/// 中心点x
 @property (nonatomic,assign)CGFloat centerX;
-//中心点y
+/// 中心点y
 @property (nonatomic,assign)CGFloat centerY;
-/** x + width */
+/// x + width
 @property (nonatomic,assign)CGFloat maxX;
-/** y + height */
+/// y + height
 @property (nonatomic,assign)CGFloat maxY;
 
 @end

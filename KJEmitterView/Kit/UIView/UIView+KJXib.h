@@ -13,16 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 IB_DESIGNABLE // 动态刷新 在类名前加上此宏定义，初始化、布置和绘制方法将被用来在画布上渲染该类的自定义视图
 @interface UIView (KJXib)
 
-/** 判断一个控件是否真正显示在主窗口 */
+/// 判断一个控件是否真正显示在主窗口
 - (BOOL)kj_isShowingOnKeyWindow;
 
-/** xib创建的view */
+/// xib创建的view
 + (instancetype)kj_viewFromXib;
 
-/** xib创建的view */
+/// xib创建的view
 + (instancetype)kj_viewFromXibWithFrame:(CGRect)frame;
 
-/** 寻找子视图 */
+/// 寻找子视图
 - (UIView*)kj_FindSubviewRecursively:(BOOL(^)(UIView*subview, BOOL* stop))recurse;
 
 /******************  xib中显示的属性 - xib创建的view右上角才有这几个选项 ******************/

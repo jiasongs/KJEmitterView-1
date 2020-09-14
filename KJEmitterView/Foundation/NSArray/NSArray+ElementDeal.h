@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /* 选择排序 */
 - (NSArray*)kj_selectionSort;
 
-/** 生成一组不重复的随机数 */
+/// 生成一组不重复的随机数 */
 - (NSArray*)kj_noRepeatRandomArrayWithMinNum:(NSInteger)min maxNum:(NSInteger )max count:(NSInteger)count;
 
 @end

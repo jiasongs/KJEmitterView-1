@@ -30,10 +30,10 @@
 // block相关宏
 #define kBlockSafeRun(block, ...) block ? block(__VA_ARGS__) : nil
 // 版本判定 大于等于某个版本
-#define KJ_JUDGE_CURRENT_VERSION(version) ([[[UIDevice currentDevice] systemVersion] compare:@#version options:NSNumericSearch] != NSOrderedAscending)
+#define kSystemVersion(version) ([[[UIDevice currentDevice] systemVersion] compare:@#version options:NSNumericSearch] != NSOrderedAscending)
 // 获取时间间隔宏
-#define KJTimeTick CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
-#define KJTimeTock NSLog(@"Time: %f", CFAbsoluteTimeGetCurrent() - start)
+#define kTimeTick CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+#define kTimeTock NSLog(@"Time: %f", CFAbsoluteTimeGetCurrent() - start);
 
 #pragma mark ********** 3.弱引用 *********
 #define _weakself __weak __typeof(&*self) weakself = self
@@ -91,11 +91,12 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define kScreenSize ([UIScreen mainScreen].bounds.size)
 #define kScreenW    ([UIScreen mainScreen].bounds.size.width)
 #define kScreenH    ([UIScreen mainScreen].bounds.size.height)
+#define kRect       CGRectMake(0, 0, kScreenW, kScreenH)
 // AutoSize
 #define kAutoW(r)   (r * kScreenW / 375.0)
 #define kAutoH(r)   (r * kScreenH / 667.0)
 
-#define kISiPhone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define kIphone  (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define kScreenMaxLength (MAX(kScreenW, kScreenH))
 #define kScreenMinLength (MIN(kScreenW, kScreenH))
 #define kISiPhone5  (kISiPhone && kScreenMaxLength == 568.0)
@@ -123,7 +124,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 // 设置图片
 #define kGetImage(imageName) ([UIImage imageNamed:[NSString stringWithFormat:@"%@",imageName]])
 // 通过图片获取图片颜色
-#define kColorWithPatternImage(image) [UIColor colorWithPatternImage:image]
+#define kImageToColor(image) [UIColor colorWithPatternImage:image]
 
 #pragma mark ********** 7.方法  *********
 // text size(文字尺寸)
