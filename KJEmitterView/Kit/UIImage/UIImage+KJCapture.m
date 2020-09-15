@@ -87,6 +87,81 @@
 }
 
 #pragma mark - 裁剪处理
+/// 裁剪掉图片周围的透明部分
++ (UIImage*)kj_cutImageRoundAlphaZero:(UIImage*)image{
+    CGImageRef cgimage = [image CGImage];
+    size_t width = CGImageGetWidth(cgimage);
+    size_t height = CGImageGetHeight(cgimage);
+    unsigned char *data = calloc(width * height * 4, sizeof(unsigned char));
+    size_t bitsPerComponent = 8;
+    size_t bytesPerRow = width * 4;
+    CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(data, width,height,bitsPerComponent,bytesPerRow,space,kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+    CGContextDrawImage(context, CGRectMake(0, 0, width, height), cgimage);
+    int top = 0,left = 0,right = 0,bottom = 0;
+    for (size_t row = 0; row < height; row++) {
+        BOOL find = false;
+        for (size_t col = 0; col < width; col++) {
+            size_t pixelIndex = (row * width + col) * 4;
+            int alpha = data[pixelIndex + 3];
+            if (alpha != 0) {
+                find = YES;
+                break;
+            }
+        }
+        if (find) break;
+        top ++;
+    }
+    for (size_t col = 0; col < width; col++) {
+        BOOL find = false;
+        for (size_t row = 0; row < height; row++) {
+            size_t pixelIndex = (row * width + col) * 4;
+            int alpha = data[pixelIndex + 3];
+            if (alpha != 0) {
+                find = YES;
+                break;
+            }
+        }
+        if (find) break;
+        left ++;
+    }
+    for (size_t col = width - 1; col > 0; col--) {
+        BOOL find = false;
+        for (size_t row = 0; row < height; row++) {
+            size_t pixelIndex = (row * width + col) * 4;
+            int alpha = data[pixelIndex + 3];
+            if (alpha != 0) {
+                find = YES;
+                break;
+            }
+        }
+        if (find) break;
+        right ++;
+    }
+    
+    for (size_t row = height - 1; row > 0; row--) {
+        BOOL find = false;
+        for (size_t col = 0; col < width; col++) {
+            size_t pixelIndex = (row * width + col) * 4;
+            int alpha = data[pixelIndex + 3];
+            if (alpha != 0) {
+                find = YES;
+                break;
+            }
+        }
+        if (find) break;
+        bottom ++;
+    }
+    
+    CGFloat scale = image.scale;
+    CGImageRef newImageRef = CGImageCreateWithImageInRect(cgimage, CGRectMake(left*scale, top*scale, (image.size.width - left - right)*scale, (image.size.height - top - bottom)*scale));
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(cgimage);
+    CGContextRelease(context);
+    CGColorSpaceRelease(space);
+    free(data);
+    return  newImage;
+}
 /// 不规则图形切图
 + (UIImage*)kj_anomalyCaptureImageWithView:(UIView*)view BezierPath:(UIBezierPath*)path{
     CAShapeLayer *maskLayer= [CAShapeLayer layer];
@@ -173,6 +248,5 @@
     UIGraphicsEndImageContext();
     return newimage;
 }
-
 
 @end

@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage*)kj_captureScreenWindowForInterfaceOrientation;
 
 #pragma mark - 裁剪处理
+/// 裁剪掉图片周围的透明部分
++ (UIImage*)kj_cutImageRoundAlphaZero:(UIImage*)image;
 /// 不规则图形切图
 + (UIImage*)kj_anomalyCaptureImageWithView:(UIView*)view BezierPath:(UIBezierPath*)path;
 /// 多边形切图

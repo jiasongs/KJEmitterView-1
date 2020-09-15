@@ -44,6 +44,9 @@
  */
 /*
  ####版本更新日志:
+ #### Add 5.0.7
+ 1. UIImage+KJCapture 新增 kj_cutImageRoundAlphaZero 裁剪掉图片周围透明区域
+ 
  #### Add 5.0.6
  1. UIColor+KJExtension2 新增颜色扩展处理
  2. UIButton+KJCreate 按钮快速创建
